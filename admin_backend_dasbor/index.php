@@ -20,7 +20,7 @@ else
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Panel | Presensi </title>
+  <title>Admin Panel | Dashboard </title>
 
 <?php 
 include "../linksheet.php";

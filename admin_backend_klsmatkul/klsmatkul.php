@@ -1,6 +1,6 @@
 <?php 
 require_once '../database/config.php';
-$hal = 'periode';
+$hal = 'klsmatkul';
 if (isset($_SESSION['peran']))
 {
   if ($_SESSION['peran']!='Admin') 
@@ -61,119 +61,27 @@ include '../sidebar_admin.php';
             <div class="card">
                 <div class="card-header" style="background-color:#86090f">
                <font color="ffffff">
-                <h3 class="card-title"><i class="nav-icon fas fa-calendar-alt"></i> Periode Akademik</h3>
+                <h3 class="card-title"><i class="nav-icon fas fa-calendar-alt"></i> Detail Kelas Mata kuliah</h3>
                 </div>
                 </font>
                 <!-- /.card-header -->
                 <div class="card-body">
+                    <?php 
+                    $id_klsmatkul = @$_GET['id'];
+                    
+                    ?>
+
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tambahperiode" style="background-color:#86090f">
                 <i class="nav-icon fas fa-plus"></i>  Tambah Data
                 </button>
                   <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
                     <tr>
-                      <th>No</th>
-                      <th>Tahun</th>
-                      <th>Semester</th>
-                      <th>Status</th>
-                      <th>Aksi</th>
+                 
                     </tr>
                     </thead>
                   <tbody>
-                  <?php
-                      $no = 1;
-                      $query = "SELECT * FROM tbl_periode";
-                      $sql_periode = mysqli_query($con, $query) or die (mysqli_error($con));
-                          if (mysqli_num_rows($sql_periode) > 0)
-                          {
-                            while($data = mysqli_fetch_array($sql_periode))
-                            {
-                                ?>
-                            <tr>
-                                 <td>
-                                  <?=$no++;?>
-                                  </td>
-
-                                  <td>
-                                   <h6>
-                                   <?=$data['tahun'];?>
-                                   </h6>  
-                                  </td>
-
-                                  <td>
-                                   <h6>
-                                   <?=$data['semester'];?>
-                                   </h6>
-                                 </td>
-
-                                 <td>
-                                  <?php
-                                  $stt = $data['stat'];
-                                  if ($stt=='T')
-                                    {
-                                     ?>
-                                     <center>
-                                     <button type="button" class="btn btn-default btn-sm"> 
-                                      Tidak Aktif
-                                     </button>
-                                     </center>
-                                     <?php 
-                                    }
-                                    else
-                                    {
-                                      ?>
-                                    <center>
-                                     <button type="button" class="btn btn-success btn-sm"> 
-                                      Aktif
-                                     </button>
-                                     </center>
-                                     <?php 
-                                    }
-                                  ?>
-                                 </td>
-
-                                <td>
-                                  <?php
-                                  if ($stt=='T')
-                                    {
-                                      $encodeid = sha1($data['Id']);
-                                     ?>
-                                    <center>
-                                      <a href="update.php?id=<?=$encodeid;?>&real=<?=$data['Id'];?>" 
-                                      class="btn btn-primary btn-sm" onclick="return confirm('Anda yakin akan mengaktifkan periode [ <?=$data['tahun'];?> - <?=$data['semester'];?> ] ?')"><i class="fas fa-sync"></i> Aktifkan</a> 
-
-                                      <a href="delete.php?id=<?=$encodeid;?>&real=<?=$data['Id'];?>" 
-                                      class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menghapus data periode [ <?=$data['tahun'];?> - <?=$data['semester'];?> ] ?')"><i class="fas fa-trash"></i> Hapus</a> 
-                                     </center>
-
-                                     <?php 
-                                    }
-                                    else
-                                    {
-                                      ?>
-                                    <center>
-                                      <p>
-                                        Tidak Ada Aksi
-                                      </p>
-                                     </center>
-
-                                     <?php 
-                                    }
-                                  ?>
-                                </td>
-                                   
-                              </tr>
-
-                            <?php
-                          }
-
-                        }
-                        else
-                        {
-                          echo "<tr><td colspan=\"5\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
-                        }
-
-                        ?>
+                 
                   </tbody>
                     <tfoot>
 

@@ -29,6 +29,9 @@ error_reporting(0);
        $kd_matkul     = $data_excel[$j]['B'];
        $nama_ind      = addslashes($data_excel[$j]['C']);
        $nama_eng      = addslashes($data_excel[$j]['D']);
+       $sks           = $data_excel[$j]['E'];
+
+       
     
        $query_pengguna = mysqli_query($con, "SELECT kode_matkul FROM tbl_matkul WHERE kode_matkul='$kd_matkul'") or die(mysqli_error($con));
 
@@ -36,7 +39,7 @@ error_reporting(0);
 
          } else
          {
-          mysqli_query($con, "INSERT INTO tbl_matkul VALUES ('','$kd_matkul','$nama_ind','$nama_eng')");           }
+          mysqli_query($con, "INSERT INTO tbl_matkul VALUES ('','$kd_matkul','$nama_ind','$nama_eng',$sks)");           }
          }
     unlink($target_file);
     }

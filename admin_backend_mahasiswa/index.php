@@ -20,7 +20,7 @@ else
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Panel | Dashboard </title>
+  <title>Admin Panel | Mahasiswa </title>
 
 <?php 
 include "../linksheet.php";
@@ -180,9 +180,36 @@ include '../sidebar_admin.php';
                                   ?>
                                  </td>
                                  <td>
-                                   <h6>
-                                   <?=$data['foto'];?>
-                                   </h6>
+                                  <center>
+                                  <?php 
+                                  if (($data['kelamin'] == 'L') && ($data['foto'] == ''))
+                                  {
+                                    ?>
+                                    <button class="btn" style="background-color:transparent"  data-toggle="modal" data-target="#modal-gantifoto" data-nimmhs="<?=$data['nim'];?>" data-fotomhs="template/img/student-lanang.png"  >
+                                     <img src="template/img/student-lanang.png" width="32px" height="32px" alt="">
+                                    </button> 
+                                    <?php 
+                                  }
+                                  elseif (($data['kelamin'] == 'P') && ($data['foto'] == ''))
+                                  {
+                                    ?>
+                                     <button class="btn" style="background-color:transparent"  data-toggle="modal" data-target="#modal-gantifoto" data-nimmhs="<?=$data['nim'];?>" data-fotomhs="template/img/student-wadon.png"  >
+                                     <img src="template/img/student-wadon.png" width="32px" height="32px" alt="">
+                                    </button> 
+                                    <?php 
+                                  }
+                                  else 
+                                  {
+                                    ?>
+                                    <button class="btn" style="background-color:transparent"  data-toggle="modal" data-target="#modal-gantifoto" data-nimmhs="<?=$data['nim'];?>" data-fotomhs="<?=$data['foto'];?>"  >
+                                    <img src="<?= $data['foto']; ?>" width="32px" height="32px" >
+                                </button> 
+                                    <?php
+                                  }
+
+
+                                  ?>
+                                  </center>
                                  </td>
                                 <td>
                                   <center>
@@ -318,7 +345,6 @@ include "../footer.php";
       </div>
       <!-- /.modal -->
 </div>
-
 <!-- modal edit data mhs -->
 <div class="modal fade" id="modal-editmahasiswa">
         <div class="modal-dialog">
@@ -413,6 +439,48 @@ include "../footer.php";
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+
+      
+          <!-- modal ganti foto mhs -->
+<div class="modal fade" id="modal-gantifoto">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color:#86090f">
+              <h5 class="modal-title">
+              <font color="ffffff">
+              <i class="nav-icon fas fa-image"></i> 
+                Ganti Foto
+              </font>
+
+              </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form class="form-horizontal" action="gantifoto.php" method="POST" id="import" enctype="multipart/form-data"> 
+            <div class="modal-body">
+              
+                    <center>
+                      <img src="" id="fotomhs" name="fotomhs" width="200px" height="200px"/>
+                      </center>
+              <div class="form-group">
+                <label for="Nama">Ambil file Foto</label>
+                <input type="file" id="filefoto" name="filefoto" class="form-control" accept=".png,.jpg" required>
+                <input type="text" id="nimmhs" name="nimmhs" class="form-control" hidden>
+              </div>
+
+
+            </div>
+            <div class="modal-footer pull-right">
+              <button type="submit" class="btn btn-danger" name="gantifoto" style="background-color:#86090f"><i class="nav-icon fas fa-upload"></i>Upload Foto</button>
+              </form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
 </div>
 <!-- ./wrapper -->
 
@@ -439,6 +507,20 @@ $('#modal-editmahasiswa').on('show.bs.modal', function(e) {
 
 });
 </script>
+
+<script type="text/javascript">
+$('#modal-gantifoto').on('show.bs.modal', function(e) {
+
+    //get data-id attribute of the clicked element
+     var nimmhs          = $(e.relatedTarget).data('nimmhs');
+     var fotomhs          = $(e.relatedTarget).data('fotomhs');
+     
+     $(e.currentTarget).find('input[name="nimmhs"]').val(nimmhs);
+     document.getElementById('fotomhs').src = fotomhs;
+    
+});
+</script>
+
 
 </body>
 </html>

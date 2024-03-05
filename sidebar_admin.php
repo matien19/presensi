@@ -48,7 +48,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="../admin_backend_klsmatkul" class="nav-link <?php if($hal == 'klsmatkul') { echo 'active';}?>">
               <i class="nav-icon fas fa-book"></i>
               <p>
                 Kelas Mata Kuliah

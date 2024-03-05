@@ -14,6 +14,7 @@ require_once "../database/config.php";
       $kd_matkul  = trim(mysqli_real_escape_string($con, $_POST['kd_matkul']));
       $nama_ind   = trim(mysqli_real_escape_string($con, $_POST['nama_ind']));
       $nama_eng   = trim(mysqli_real_escape_string($con, $_POST['nama_eng']));
+      $sks        = trim(mysqli_real_escape_string($con, $_POST['sks']));
 
       $querycek   =  mysqli_query($con, "SELECT * FROM tbl_matkul WHERE kode_matkul ='$kd_matkul'") or die (mysqli_error($con));
 
@@ -22,7 +23,7 @@ require_once "../database/config.php";
            echo '
            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
             <script>
-              swal("Berhasil", "Data mata kuliah telah sudah Ada", "warning");
+              swal("Peringatan", "Kode mata kuliah sudah Ada", "warning");
               
               setTimeout(function(){ 
               window.location.href = "../admin_backend_matkul";
@@ -34,7 +35,7 @@ require_once "../database/config.php";
        }
       else
        {
-           mysqli_query($con, "INSERT INTO tbl_matkul VALUES ('','$kd_matkul','$nama_ind','$nama_eng')") or die (mysqli_error($con));
+           mysqli_query($con, "INSERT INTO tbl_matkul VALUES ('','$kd_matkul','$nama_ind','$nama_eng','$sks')") or die (mysqli_error($con));
            echo '
            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
             <script>

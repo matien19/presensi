@@ -45,7 +45,7 @@ include '../sidebar_admin.php';
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">
-          <div class="card card-primary">
+            <div class="card card-primary">
               <div class="card-header"  style="background-color:#86090f">
                 <h3 class="card-title">Ganti Password</h3>
               </div>

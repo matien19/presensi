@@ -20,7 +20,7 @@ else
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Panel | Dashboard </title>
+  <title>Admin Panel | Administartor </title>
 
 <?php 
 include "../linksheet.php";
@@ -68,9 +68,6 @@ include '../sidebar_admin.php';
                 <div class="card-body">
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tambahadmin" style="background-color:#86090f">
                 <i class="nav-icon fas fa-plus"></i>  Tambah Data
-                </button>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-importdata">
-                  <i class="nav-icon fas fa-file-excel"></i> Import Data
                 </button>
                   <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
@@ -234,44 +231,6 @@ include "../footer.php";
       <!-- /.modal -->
 </div>
 
-      <!-- modal edit data mhs -->
-<div class="modal fade" id="modal-importdata">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header" style="background-color:#86090f">
-              <h5 class="modal-title">
-              <font color="ffffff">
-              <i class="nav-icon fas fa-file-excel"></i> 
-                Import Data Admin
-              </font>
-
-              </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form class="form-horizontal" action="impor.php" method="POST" id="import" enctype="multipart/form-data"> 
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="Nama">Ambil file Excel</label>
-                <input type="file" id="file" name="file" class="form-control" accept=".xls,.xlsx" required>
-              </div>
-             <h6>Template Excel</h6>
-              <a href="download.php?filename=templatemhs.xls" class="btn btn-success btn-sm">
-                  <i class="nav-icon fas fa-file-excel"></i> Download
-                </a>
-            </div>
-            <div class="modal-footer pull-right">
-              <button type="submit" class="btn btn-danger" name="impor" style="background-color:#86090f"><i class="nav-icon fas fa-file-excel"></i>Import Data</button>
-              </form>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
-</div>
 <!-- ./wrapper -->
 
 <?php 

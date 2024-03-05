@@ -1,6 +1,6 @@
 <?php 
 require_once '../database/config.php';
-$hal = 'periode';
+$hal = 'klsmatkul';
 if (isset($_SESSION['peran']))
 {
   if ($_SESSION['peran']!='Admin') 
@@ -61,7 +61,7 @@ include '../sidebar_admin.php';
             <div class="card">
                 <div class="card-header" style="background-color:#86090f">
                <font color="ffffff">
-                <h3 class="card-title"><i class="nav-icon fas fa-calendar-alt"></i> Periode Akademik</h3>
+                <h3 class="card-title"><i class="nav-icon fas fa-book"></i> Kelas mata Kuliah </h3>
                 </div>
                 </font>
                 <!-- /.card-header -->
@@ -72,21 +72,25 @@ include '../sidebar_admin.php';
                   <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
                     <tr>
-                      <th>No</th>
-                      <th>Tahun</th>
-                      <th>Semester</th>
-                      <th>Status</th>
-                      <th>Aksi</th>
+                      <th style="width:5%">No</th>
+                      <th>Mata Kuliah</th>
+                      <th>Dosen Pengampu</th>
+                      <th><center>SKS</center></th>
+                      <th><center>Aksi</center></th>
                     </tr>
                     </thead>
                   <tbody>
                   <?php
                       $no = 1;
-                      $query = "SELECT * FROM tbl_periode";
-                      $sql_periode = mysqli_query($con, $query) or die (mysqli_error($con));
-                          if (mysqli_num_rows($sql_periode) > 0)
+                      $aktif = 'A';
+                      $query_periode = mysqli_query($con, "SELECT Id FROM tbl_periode WHERE stat='$aktif'");
+                      $data_periode_aktif = mysqli_fetch_assoc($query_periode);
+                      $periode_aktif = $data_periode_aktif['Id'];
+                      $query = "SELECT * FROM tbl_klsmatkul WHERE id_periode ='$periode_aktif'";
+                      $sql_klsmatkul = mysqli_query($con, $query) or die (mysqli_error($con));
+                          if (mysqli_num_rows($sql_klsmatkul) > 0)
                           {
-                            while($data = mysqli_fetch_array($sql_periode))
+                            while($data = mysqli_fetch_array($sql_klsmatkul))
                             {
                                 ?>
                             <tr>
@@ -96,70 +100,46 @@ include '../sidebar_admin.php';
 
                                   <td>
                                    <h6>
-                                   <?=$data['tahun'];?>
+                                    <?php
+                                    $kode_mk = $data['kode_matkul'];
+                                    $query_mk = mysqli_query($con, "SELECT nama_ind, nama_eng, sks FROM tbl_matkul WHERE kode_matkul ='$kode_mk'");
+                                    $data_mk = mysqli_fetch_assoc($query_mk);
+                                    $nama_mk = $data_mk['nama_ind'];
+                                    $nama_mk_eng = $data_mk['nama_eng'];
+                                    $sks = $data_mk['sks'];
+                                    ?>
+                                    <b><?=$kode_mk;?></b>
+                                    <br> <?= $nama_mk;?>
+                                    <br> <?= $nama_mk_eng;?>
                                    </h6>  
                                   </td>
 
                                   <td>
                                    <h6>
-                                   <?=$data['semester'];?>
+                                   <?php
+                                    $nid = $data['nid'];
+                                    $query_dosen = mysqli_query($con, "SELECT nama FROM tbl_dosen WHERE nid ='$nid' ");
+                                    $data_dosen = mysqli_fetch_assoc($query_dosen);
+                                    $nama_dosen = $data_dosen['nama'];
+                                    ?>
+                                    <b><?=$nid;?></b>
+                                    <br> <?= $nama_dosen;?>
                                    </h6>
                                  </td>
 
                                  <td>
-                                  <?php
-                                  $stt = $data['stat'];
-                                  if ($stt=='T')
-                                    {
-                                     ?>
-                                     <center>
-                                     <button type="button" class="btn btn-default btn-sm"> 
-                                      Tidak Aktif
-                                     </button>
-                                     </center>
-                                     <?php 
-                                    }
-                                    else
-                                    {
-                                      ?>
-                                    <center>
-                                     <button type="button" class="btn btn-success btn-sm"> 
-                                      Aktif
-                                     </button>
-                                     </center>
-                                     <?php 
-                                    }
-                                  ?>
+                                  <center>
+                                  <?= $sks;?>
+                                  </center>
                                  </td>
 
                                 <td>
-                                  <?php
-                                  if ($stt=='T')
-                                    {
-                                      $encodeid = sha1($data['Id']);
-                                     ?>
-                                    <center>
-                                      <a href="update.php?id=<?=$encodeid;?>&real=<?=$data['Id'];?>" 
-                                      class="btn btn-primary btn-sm" onclick="return confirm('Anda yakin akan mengaktifkan periode [ <?=$data['tahun'];?> - <?=$data['semester'];?> ] ?')"><i class="fas fa-sync"></i> Aktifkan</a> 
-
-                                      <a href="delete.php?id=<?=$encodeid;?>&real=<?=$data['Id'];?>" 
-                                      class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menghapus data periode [ <?=$data['tahun'];?> - <?=$data['semester'];?> ] ?')"><i class="fas fa-trash"></i> Hapus</a> 
-                                     </center>
-
-                                     <?php 
-                                    }
-                                    else
-                                    {
-                                      ?>
-                                    <center>
-                                      <p>
-                                        Tidak Ada Aksi
-                                      </p>
-                                     </center>
-
-                                     <?php 
-                                    }
-                                  ?>
+                                  <center>
+                                <a href="klsmatkul.php?id=<?=$data['Id'];?>" class="btn btn-info btn-sm">
+                                  <i class="fas fa-edit"></i>
+                                   Detail
+                              </a> 
+                              </center>
                                 </td>
                                    
                               </tr>

@@ -16,8 +16,10 @@ require_once "../database/config.php";
         $kd_matkul  = trim(mysqli_real_escape_string($con, $_POST['kd_matkul']));
         $nama_ind   = trim(mysqli_real_escape_string($con, $_POST['nama_ind']));
         $nama_eng   = trim(mysqli_real_escape_string($con, $_POST['nama_eng']));
+        $sks        = trim(mysqli_real_escape_string($con, $_POST['sks']));
+
        
-        mysqli_query($con, "UPDATE tbl_matkul SET kode_matkul='$kd_matkul', nama_ind='$nama_ind', nama_eng='$nama_eng' WHERE Id='$id'") or die (mysqli_error($con));
+        mysqli_query($con, "UPDATE tbl_matkul SET kode_matkul='$kd_matkul', nama_ind='$nama_ind', nama_eng='$nama_eng', sks='$sks' WHERE Id='$id'") or die (mysqli_error($con));
       }
       
   ?>

@@ -20,7 +20,7 @@ else
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Panel | Dashboard </title>
+  <title>Admin Panel | Mata Kuliah </title>
 
 <?php 
 include "../linksheet.php";
@@ -74,6 +74,7 @@ include '../sidebar_admin.php';
                     <th>Kode Mata Kuliah</th>
                     <th>Nama Indonesia</th>
                     <th><center>Nama Inggris</center></th>
+                    <th><center> SKS</center></th>
                     <th><center>Aksi</center></th>
                     </tr>
                     </thead>
@@ -109,16 +110,23 @@ include '../sidebar_admin.php';
                                    <?=$data['nama_eng'];?>
                                    </h6>
                                  </td>
+                                 <td>
+                                 <center>
+                                   <h6>
+                                   <?=$data['sks'];?>
+                                   </h6>
+                                 </center>
+                                 </td>
 
                                
                                 <td>
                                   <center>
-                                <button class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#modal-editdata" data-id="<?=$data['Id'];?>" data-kd_matkul="<?=$data['kode_matkul'];?>" data-nama_ind="<?=$data['nama_ind'];?>" data-nama_eng="<?=$data['nama_eng'];?>">
+                                <button class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#modal-editdata" data-id="<?=$data['Id'];?>" data-kd_matkul="<?=$data['kode_matkul'];?>" data-nama_ind="<?=$data['nama_ind'];?>" data-nama_eng="<?=$data['nama_eng'];?>" data-sks="<?=$data['sks'];?>">
                                   <i class="fas fa-edit"></i>
                                    Edit 
                                 </button> 
                                    
-                                <a href="delete.php?id=<?=$data['Id'];?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menghapus data dosen [ <?=$data['kode_matkul'] .' - '. $data['nama_ind']; ?> ] ?')">
+                                <a href="delete.php?id=<?=$data['Id'];?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menghapus data Mata Kuliah [ <?=$data['kode_matkul'] .' - '. $data['nama_ind']; ?> ] ?')">
                                   <i class="fas fa-trash"></i>
                                    Hapus
                               </a> 
@@ -133,7 +141,7 @@ include '../sidebar_admin.php';
                         }
                         else
                         {
-                          echo "<tr><td colspan=\"5\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
+                          echo "<tr><td colspan=\"6\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
                         }
 
                     ?>
@@ -193,8 +201,12 @@ include "../footer.php";
                 <input type="text" name="nama_ind" class="form-control" placeholder="Masukan Nama Indonesia">
               </div>
               <div class="form-group">
-                <label for="kontak">Nama Inggris</label>
+                <label for="nama_eng">Nama Inggris</label>
                 <input type="text" name="nama_eng" class="form-control" placeholder="Masukan kontak Inggris">
+              </div>
+              <div class="form-group">
+                <label for="sks">Jumlah SKS</label>
+                <input type="text" name="sks" class="form-control" placeholder="Masukan kontak Inggris">
               </div>
             </div>
             <div class="modal-footer pull-right">
@@ -217,7 +229,7 @@ include "../footer.php";
               <h5 class="modal-title">
               <font color="ffffff">
               <i class="nav-icon fas fa-edit"></i> 
-                Edit Data mahasiswa
+                Edit Data Mata Kuliah
               </font>
 
               </h5>
@@ -242,6 +254,10 @@ include "../footer.php";
                 <label for="kontak">Nama Inggris</label>
                 <input type="text" name="nama_eng" class="form-control">
               </div>
+              <div class="form-group">
+                <label for="sks">Jumlah SKS</label>
+                <input type="text" name="sks" class="form-control">
+              </div>
             </div>
             <div class="modal-footer pull-right">
               <button type="submit" class="btn btn-danger" name="editdata" style="background-color:#86090f"><i class="nav-icon fas fa-edit"></i>Edit Data</button>
@@ -262,7 +278,7 @@ include "../footer.php";
               <h5 class="modal-title">
               <font color="ffffff">
               <i class="nav-icon fas fa-file-excel"></i> 
-                Import Data mahasiswa
+                Import Data Mata Kuliah
               </font>
 
               </h5>
@@ -277,7 +293,7 @@ include "../footer.php";
                 <input type="file" id="file" name="file" class="form-control" accept=".xls,.xlsx" required>
               </div>
              <h6>Template Excel</h6>
-              <a href="download.php?filename=templatemhs.xls" class="btn btn-success btn-sm">
+              <a href="download.php?filename=templatematkul.xls" class="btn btn-success btn-sm">
                   <i class="nav-icon fas fa-file-excel"></i> Download
                 </a>
             </div>
@@ -306,11 +322,13 @@ $('#modal-editdata').on('show.bs.modal', function(e) {
      var kd_matkul         = $(e.relatedTarget).data('kd_matkul');
      var nama_ind      = $(e.relatedTarget).data('nama_ind');
      var nama_eng         = $(e.relatedTarget).data('nama_eng');
+     var sks         = $(e.relatedTarget).data('sks');
      
      $(e.currentTarget).find('input[name="id"]').val(id);
      $(e.currentTarget).find('input[name="kd_matkul"]').val(kd_matkul);
      $(e.currentTarget).find('input[name="nama_ind"]').val(nama_ind);
      $(e.currentTarget).find('input[name="nama_eng"]').val(nama_eng);
+     $(e.currentTarget).find('input[name="sks"]').val(sks);
 
 });
 </script>

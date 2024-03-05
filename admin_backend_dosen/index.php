@@ -20,7 +20,7 @@ else
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Panel | Dashboard </title>
+  <title>Admin Panel | Dosen </title>
 
 <?php 
 include "../linksheet.php";
@@ -178,9 +178,34 @@ include '../sidebar_admin.php';
                                   ?>
                                  </td>
                                  <td>
-                                   <h6>
-                                   <?=$data['foto'];?>
-                                   </h6>  
+                                 <center>
+                                  <?php 
+                                  if (($data['kelamin'] == 'L') && ($data['foto'] == ''))
+                                  {
+                                    ?>
+                                    <button class="btn" style="background-color:transparent"  data-toggle="modal" data-target="#modal-gantifoto" data-niddosen="<?=$data['nid'];?>" data-fotodosen="template/img/dosen-lanang.png">
+                                     <img src="template/img/dosen-lanang.png" width="32px" height="32px" alt="">
+                                    </button> 
+                                    <?php 
+                                  }
+                                  elseif (($data['kelamin'] == 'P') && ($data['foto'] == ''))
+                                  {
+                                    ?>
+                                     <button class="btn" style="background-color:transparent"  data-toggle="modal" data-target="#modal-gantifoto" data-niddosen="<?=$data['nid'];?>" data-fotodosen="template/img/dosen-wadon.png"  >
+                                     <img src="template/img/dosen-wadon.png" width="32px" height="32px" alt="">
+                                    </button> 
+                                    <?php 
+                                  }
+                                  else 
+                                  {
+                                    ?>
+                                    <button class="btn" style="background-color:transparent"  data-toggle="modal" data-target="#modal-gantifoto" data-niddosen="<?=$data['nid'];?>" data-fotodosen="<?=$data['foto'];?>"  >
+                                    <img src="<?= $data['foto']; ?>" width="32px" height="32px" >
+                                </button> 
+                                    <?php
+                                  }
+                                  ?>
+                                  </center> 
                                   </td>
                                 <td>
                                   <center>
@@ -325,7 +350,7 @@ include "../footer.php";
               <h5 class="modal-title">
               <font color="ffffff">
               <i class="nav-icon fas fa-edit"></i> 
-                Edit Data mahasiswa
+                Edit Data Dosen
               </font>
 
               </h5>
@@ -374,7 +399,7 @@ include "../footer.php";
 </div>
       <!-- /.modal -->
 
-      <!-- modal edit data mhs -->
+      <!-- modal import data mhs -->
 <div class="modal fade" id="modal-importdata">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -382,7 +407,7 @@ include "../footer.php";
               <h5 class="modal-title">
               <font color="ffffff">
               <i class="nav-icon fas fa-file-excel"></i> 
-                Import Data mahasiswa
+                Import Data Dosen
               </font>
 
               </h5>
@@ -397,7 +422,7 @@ include "../footer.php";
                 <input type="file" id="file" name="file" class="form-control" accept=".xls,.xlsx" required>
               </div>
              <h6>Template Excel</h6>
-              <a href="download.php?filename=templatemhs.xls" class="btn btn-success btn-sm">
+              <a href="download.php?filename=templatedosen.xls" class="btn btn-success btn-sm">
                   <i class="nav-icon fas fa-file-excel"></i> Download
                 </a>
             </div>
@@ -410,6 +435,47 @@ include "../footer.php";
         </div>
         <!-- /.modal-dialog -->
       </div>
+      <!-- /.modal -->
+
+          <!-- modal ganti foto mhs -->
+<div class="modal fade" id="modal-gantifoto">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color:#86090f">
+              <h5 class="modal-title">
+              <font color="ffffff">
+              <i class="nav-icon fas fa-image"></i> 
+                Ganti Foto
+              </font>
+
+              </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form class="form-horizontal" action="gantifoto.php" method="POST" id="import" enctype="multipart/form-data"> 
+            <div class="modal-body">
+              
+                    <center>
+                      <img src="" id="fotodosen" name="fotodosen" width="200px" height="200px"/>
+                      </center>
+              <div class="form-group">
+                <label for="Nama">Ambil file Foto</label>
+                <input type="file" id="filefoto" name="filefoto" class="form-control" accept=".png,.jpg" required>
+                <input type="text" id="niddosen" name="niddosen" class="form-control" hidden>
+              </div>
+
+
+            </div>
+            <div class="modal-footer pull-right">
+              <button type="submit" class="btn btn-danger" name="gantifoto" style="background-color:#86090f"><i class="nav-icon fas fa-upload"></i>Upload Foto</button>
+              </form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+</div>
       <!-- /.modal -->
 </div>
 <!-- ./wrapper -->
@@ -435,6 +501,18 @@ $('#modal-editdata').on('show.bs.modal', function(e) {
      $(e.currentTarget).find('input[name="kontak"]').val(nohp);
      $(e.currentTarget).find('select[name="status"]').val(status);
 
+});
+</script>
+<script type="text/javascript">
+$('#modal-gantifoto').on('show.bs.modal', function(e) {
+
+    //get data-id attribute of the clicked element
+     var niddosen          = $(e.relatedTarget).data('niddosen');
+     var fotodosen          = $(e.relatedTarget).data('fotodosen');
+     
+     $(e.currentTarget).find('input[name="niddosen"]').val(niddosen);
+     document.getElementById('fotodosen').src = fotodosen;
+    
 });
 </script>
 
