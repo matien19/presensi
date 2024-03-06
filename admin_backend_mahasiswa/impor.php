@@ -28,21 +28,25 @@ error_reporting(0);
         {
        $nim       = $data_excel[$j]['B'];
        $nama      = addslashes($data_excel[$j]['C']);
-       $nohp    = $data_excel[$j]['D'];
-       $kelamin  = $data_excel[$j]['E'];
-       $stat = $data_excel[$j]['F'];
-       $encpass = 'pass'.$nim;
-       $pass = sha1($encpass);
-       $peran = 'mhs';
+       $nohp      = $data_excel[$j]['D'];
+       $kelamin   = $data_excel[$j]['E'];
+       $stat      = $data_excel[$j]['F'];
+       $encpass   = 'pass'.$nim;
+       $pass      = sha1($encpass);
+       $peran     = 'mhs';
+       $kosong = '';
     
-         mysqli_query($con, "INSERT INTO tbl_mahasiswa VALUES ('$nim','$nama','$kelamin','$nohp','$stat','')");      
+         mysqli_query($con, "INSERT INTO tbl_mahasiswa VALUES ('$nim','$nama','$kelamin','$nohp','$stat','$kosong')");      
+         mysqli_query($con, "DELETE FROM tbl_mahasiswa WHERE nim='$kosong'");      
 
          $query_pengguna = mysqli_query($con, "SELECT username FROM tbl_pengguna WHERE username='$nim'") or die(mysqli_error($con));
 
          if (mysqli_num_rows($query_pengguna) > 0){
 
          }else{
-            mysqli_query($con, "INSERT INTO tbl_pengguna VALUES ('','$nim','$pass','$peran','$nama')");      
+            mysqli_query($con, "INSERT INTO tbl_pengguna VALUES ('','$nim','$pass','$peran','$nama')") or die(mysqli_error($con)); 
+            mysqli_query($con, "DELETE FROM tbl_pengguna WHERE id='$kosong'") or die(mysqli_error($con)); 
+
          }
         }
     unlink($target_file);

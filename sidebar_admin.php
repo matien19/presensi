@@ -55,7 +55,38 @@
               </p>
             </a>
           </li>
-        
+          <li class="nav-item">
+          <a href="../admin_backend_presensi" class="nav-link <?php if ($hal == 'presensi') { echo 'active'; } ?>">
+            <i class="nav-icon fas fa-clipboard "></i>
+            <p>
+            Presensi
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_backend_laporan" class="nav-link <?php if ($hal == 'laporanpresensi') { echo 'active'; } ?>">
+            <i class="nav-icon fas fa-file "></i>
+            <p>
+            Laporan Presensi
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="../ganti_pw" class="nav-link <?php if ($hal == 'gantipassword') { echo 'active'; } ?>">
+            <i class="nav-icon fas fa-lock "></i>
+            <p>
+            Ganti Password
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="../admin_backend_matkul" class="nav-link">
+            <i class="nav-icon fas fa-sign-out-alt "></i>
+            <p>
+            Keluar
+            </p>
+          </a>
+        </li>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

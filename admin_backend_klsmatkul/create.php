@@ -17,7 +17,6 @@ require_once "../database/config.php";
       $id_periode = @$_GET['id_periode'];
 
       $querycek_klsmk =  mysqli_query($con, "SELECT * FROM tbl_klsmatkul WHERE kode_matkul='$kode_mk' AND nid='$nid' AND id_periode='$id_periode' AND kelas='$kelas'") or die (mysqli_eror($con));
-      ;
 
        if (mysqli_num_rows($querycek_klsmk) > 0)
        {

@@ -86,6 +86,7 @@ include '../sidebar_admin.php';
                       <th>Dosen Pengampu</th>
                       <th><center>Kelas</center></th>
                       <th><center>SKS</center></th>
+                      <th><center>Jumlah Mahasiswa</center></th>
                       <th><center>Aksi</center></th>
                     </tr>
                     </thead>
@@ -146,6 +147,18 @@ include '../sidebar_admin.php';
                                  <td>
                                   <center>
                                   <?= $sks;?>
+                                  </center>
+                                 </td>
+                                 <td>
+                                  <?php 
+                                  $id_klsmk = $data['Id'];
+                                  $querycekklsmk = mysqli_query($con, "SELECT COUNT(nim) AS jumlahmhs FROM tbl_pesertamatkul WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
+                                  $data_jumlah = mysqli_fetch_assoc($querycekklsmk);
+                                  $jumlahmhs = $data_jumlah['jumlahmhs'];
+                                  echo $jumlahmhs; 
+                                                                    
+                                  ?>
+                                  <center>
                                   </center>
                                  </td>
 
@@ -269,7 +282,7 @@ include "../footer.php";
               <h5 class="modal-title">
               <font color="ffffff">
               <i class="nav-icon fas fa-file-excel"></i> 
-                Import Data Dosen
+                Import Data Kelas Mata Kuliah
               </font>
 
               </h5>
@@ -277,17 +290,40 @@ include "../footer.php";
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form class="form-horizontal" action="impor.php" method="POST" id="import" enctype="multipart/form-data"> 
+            <form class="form-horizontal" action="impor.php?id_periode=<?=$periode_aktif;?>" method="POST" id="import" enctype="multipart/form-data"> 
             <div class="modal-body">
               <div class="form-group">
                 <label for="Nama">Ambil file Excel</label>
                 <input type="file" id="file" name="file" class="form-control" accept=".xls,.xlsx" required>
               </div>
-             <h6>Template Excel</h6>
-              <a href="download.php?filename=templatedosen.xls" class="btn btn-success btn-sm">
+              
+              <div class="row">
+              <div class="form-group col-lg-4" >
+              <center>
+              <h6><b>Template Excel</b></h6>
+              <a href="download.php?filename=templateklsmatkul.xls" class="btn btn-success btn-sm">
                   <i class="nav-icon fas fa-file-excel"></i> Download
                 </a>
+              </center>
             </div>
+            <div class="form-group col-lg-4">
+            <center>
+             <h6><b>Template Dosen</b></h6>
+              <a href="expordosen.php" class="btn btn-info btn-sm">
+                  <i class="nav-icon fas fa-user-circle"></i> Export
+                </a>
+                </center>
+            </div>
+            <div class="form-group col-lg-4">
+            <center>
+             <h6><b>Template Matkul</b></h6>
+              <a href="download.php?filename=templateklsmatkul.xls" class="btn btn-success btn-sm">
+                  <i class="nav-icon fas fa-file-excel"></i> Download
+                </a>
+                </center>
+            </div>
+              </div>
+              
             <div class="modal-footer pull-right">
               <button type="submit" class="btn btn-danger" name="impor" style="background-color:#86090f"><i class="nav-icon fas fa-file-excel"></i>Import Data</button>
               </form>

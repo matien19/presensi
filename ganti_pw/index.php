@@ -1,5 +1,6 @@
 <?php 
 require_once '../database/config.php';
+$hal = 'gantipassword';
 $id = $_SESSION['id'];
 ?>
 

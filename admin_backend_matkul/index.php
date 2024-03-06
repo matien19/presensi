@@ -129,7 +129,7 @@ include '../sidebar_admin.php';
                                 <a href="delete.php?id=<?=$data['Id'];?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menghapus data Mata Kuliah [ <?=$data['kode_matkul'] .' - '. $data['nama_ind']; ?> ] ?')">
                                   <i class="fas fa-trash"></i>
                                    Hapus
-                              </a> 
+                                </a> 
                               </center>
                                 </td>
                                    

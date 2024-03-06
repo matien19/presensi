@@ -8,7 +8,6 @@ require_once "../database/config.php";
 <body>
 <div class="wrapper" style="zoom:90%" !important>
   <?php
-      $peran = 'dosen';
       mysqli_query($con, "TRUNCATE TABLE tbl_klsmatkul") or die (mysqli_eror($con));
       mysqli_query($con, "TRUNCATE TABLE tbl_pesertamatkul") or die (mysqli_eror($con));
     ?>
