@@ -69,12 +69,22 @@ include '../sidebar_admin.php';
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tambahperiode" style="background-color:#86090f">
                 <i class="nav-icon fas fa-plus"></i>  Tambah Data
                 </button>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-importdata">
+                  <i class="nav-icon fas fa-file-excel"></i> Import Data
+                </button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-importdata">
+                  <i class="nav-icon fas fa-file-excel"></i> Import Data ALL
+                </button>
+                 <a href="reset.php" class="btn btn-danger" onclick="return confirm('Anda akan menghapus seluruh data kelas mata kuliah?')">
+                  <i class="nav-icon fas fa-times"></i> Reset Data
+                </a>
                   <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
                     <tr>
                       <th style="width:5%">No</th>
-                      <th>Mata Kuliah</th>
+                      <th style="width:25%">Mata Kuliah</th>
                       <th>Dosen Pengampu</th>
+                      <th><center>Kelas</center></th>
                       <th><center>SKS</center></th>
                       <th><center>Aksi</center></th>
                     </tr>
@@ -101,6 +111,7 @@ include '../sidebar_admin.php';
                                   <td>
                                    <h6>
                                     <?php
+                                    $kelas = $data['kelas'];
                                     $kode_mk = $data['kode_matkul'];
                                     $query_mk = mysqli_query($con, "SELECT nama_ind, nama_eng, sks FROM tbl_matkul WHERE kode_matkul ='$kode_mk'");
                                     $data_mk = mysqli_fetch_assoc($query_mk);
@@ -129,6 +140,11 @@ include '../sidebar_admin.php';
 
                                  <td>
                                   <center>
+                                  <?= $kelas;?>
+                                  </center>
+                                 </td>
+                                 <td>
+                                  <center>
                                   <?= $sks;?>
                                   </center>
                                  </td>
@@ -138,7 +154,8 @@ include '../sidebar_admin.php';
                                 <a href="klsmatkul.php?id=<?=$data['Id'];?>" class="btn btn-info btn-sm">
                                   <i class="fas fa-edit"></i>
                                    Detail
-                              </a> 
+                                </a>
+                                <a href="delete.php?id=<?=$data['Id'];?>"class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menghapus data Kelas Mata Kuliah [ <?=$kode_mk;?> - <?=$nama_mk;?> ] ?')"><i class="fas fa-trash"></i> Hapus</a> 
                               </center>
                                 </td>
                                    
@@ -150,7 +167,7 @@ include '../sidebar_admin.php';
                         }
                         else
                         {
-                          echo "<tr><td colspan=\"5\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
+                          echo "<tr><td colspan=\"6\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
                         }
 
                         ?>
@@ -189,7 +206,7 @@ include "../footer.php";
               <h5 class="modal-title">
               <font color="ffffff">
               <i class="nav-icon fas fa-plus"></i> 
-                Tambah Periode Akademik
+                Tambah Kelas Mata Kuliah
               </font>
               </h5>
               
@@ -197,26 +214,41 @@ include "../footer.php";
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form class="form-horizontal" action="create.php" method="POST" >
+            <form class="form-horizontal" action="create.php?id_periode=<?=$periode_aktif;?>" method="POST" >
             <div class="modal-body">
               <div class="form-group">
-                <label for="tahun akademik">Tahun Akademik</label>
-                        <select class="form-control" name="tahunakademik">
-                          <option>2018</option>
-                          <option>2019</option>
-                          <option>2020</option>
-                          <option>2021</option>
-                          <option>2022</option>
-                          <option>2023</option>
-                          <option>2024</option>
-                        </select>
+                <label for="dosen">Dosen</label>
+                    </select>
+                        <select class="form-control" name="dosen">
+                    <?php
+                    $sql_dosen =  mysqli_query($con, "SELECT nid, nama FROM tbl_dosen") or die (mysqli_error($con));
+                    
+                    while($data_dosen = mysqli_fetch_array($sql_dosen)){
+                      ?>
+                      <option value = "<?=$data_dosen['nid'];?>"><b><?=$data_dosen['nid'];?></b> - <?=$data_dosen['nama'];?></option>
+                      <?php
+                    }
+                    ?>
+                    </select>
               </div>
               <div class="form-group">
-                <label for="tahun akademik">Semester</label>
-                        <select class="form-control" name="semester">
-                          <option>Ganjil</option>
-                          <option>Genap</option>
-                        </select>
+                <label for="matkul">Mata Kuliah</label>
+                    </select>
+                        <select class="form-control" name="matkul">
+                    <?php
+                    $sql_mk =  mysqli_query($con, "SELECT kode_matkul, nama_ind, nama_eng FROM tbl_matkul") or die (mysqli_error($con));
+                    
+                    while($data_mk = mysqli_fetch_array($sql_mk)){
+                      ?>
+                      <option value = "<?=$data_mk['kode_matkul'];?>"><b> <?=$data_mk['kode_matkul'];?></b> - [ <?=$data_mk['nama_ind'];?> ]  - [ <?=$data_mk['nama_eng'];?> ]</option>
+                      <?php
+                    }
+                    ?>
+                    </select>
+              </div>
+              <div class="form-group">
+                <label for="kelas">Kelas</label>
+                <input name="kelas" type="text" id="kelas" size="2" class="form-control" maxlength="2" placeholder="Masukan Kelas" onKeyPress="return goodchars(event,'ABCDEFGHIJKLMNOPQRSTUVWXYZ',this)" required/>
               </div>
             </div>
             <div class="modal-footer pull-right">
@@ -229,10 +261,86 @@ include "../footer.php";
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+            <!-- modal import data mhs -->
+<div class="modal fade" id="modal-importdata">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color:#86090f">
+              <h5 class="modal-title">
+              <font color="ffffff">
+              <i class="nav-icon fas fa-file-excel"></i> 
+                Import Data Dosen
+              </font>
+
+              </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form class="form-horizontal" action="impor.php" method="POST" id="import" enctype="multipart/form-data"> 
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="Nama">Ambil file Excel</label>
+                <input type="file" id="file" name="file" class="form-control" accept=".xls,.xlsx" required>
+              </div>
+             <h6>Template Excel</h6>
+              <a href="download.php?filename=templatedosen.xls" class="btn btn-success btn-sm">
+                  <i class="nav-icon fas fa-file-excel"></i> Download
+                </a>
+            </div>
+            <div class="modal-footer pull-right">
+              <button type="submit" class="btn btn-danger" name="impor" style="background-color:#86090f"><i class="nav-icon fas fa-file-excel"></i>Import Data</button>
+              </form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+  </div>
 </div>
 <!-- ./wrapper -->
 <?php 
 include "../script.php";
 ?>
+<script language="javascript">
+function getkey(e)
+{
+if (window.event)
+   return window.event.keyCode;
+else if (e)
+   return e.which;
+else
+   return null;
+}
+function goodchars(e, goods, field)
+{
+var key, keychar;
+key = getkey(e);
+if (key == null) return true;
+
+keychar = String.fromCharCode(key);
+keychar = keychar.toLowerCase();
+goods = goods.toLowerCase();
+
+// check goodkeys
+if (goods.indexOf(keychar) != -1)
+	return true;
+// control keys
+if ( key==null || key==0 || key==8 || key==9 || key==27 )
+   return true;
+   
+if (key == 13) {
+	var i;
+	for (i = 0; i < field.form.elements.length; i++)
+		if (field == field.form.elements[i])
+			break;
+	i = (i + 1) % field.form.elements.length;
+	field.form.elements[i].focus();
+	return false;
+	};
+// else return false
+return false;
+}
+</script>
 </body>
 </html>

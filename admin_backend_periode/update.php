@@ -13,9 +13,9 @@ require_once "../database/config.php";
       $aktif      = 'A';
       $nonaktif   = 'T';
 
-      mysqli_query($con, "UPDATE tbl_periode SET status='$nonaktif'") or die (mysqli_eror($con));
+      mysqli_query($con, "UPDATE tbl_periode SET stat='$nonaktif'") or die (mysqli_eror($con));
 
-      mysqli_query($con, "UPDATE tbl_periode SET status='$aktif' WHERE Id='$id'") or die (mysqli_eror($con));
+      mysqli_query($con, "UPDATE tbl_periode SET stat='$aktif' WHERE Id='$id'") or die (mysqli_eror($con));
     ?>
 
  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

@@ -66,27 +66,136 @@ include '../sidebar_admin.php';
                 </font>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <?php 
+                    <?php
                     $id_klsmatkul = @$_GET['id'];
-                    
+                    $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmatkul' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
+                    $dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul);
+                    $tahun = $dataklsmatkul['tahun'];
+                    $semester = $dataklsmatkul['semester'];
+                    $id_periode = $dataklsmatkul['id_periode'];
+                    $nama_dosen = $dataklsmatkul['nama_dosen'];
+                    $nama_ind = $dataklsmatkul['nama_mk_ind'];
+                    $nama_eng = $dataklsmatkul['nama_mk_eng'];
+                    $kelas = $dataklsmatkul['kelas'];
                     ?>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <table class="table table-bordered table-sm">  
+                      <tbody>
+                      <tr>
+                          <td><b>Tahun Akademik</b></td>
+                          <td><?= $tahun. ' - ' .$semester;?></td>
+                      </tr>
+                      <tr>
+                        <td><b>Dosen Pengampu</b></td>
+                        <td><?= $nama_dosen; ?></td>
+                      </tr>
+                      <tr>
+                        <td><b>Mata Kuliah</b></td>
+                        <td><?=$nama_ind;?></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tambahperiode" style="background-color:#86090f">
+                  <div class="col-lg-6">
+                    <table class="table table-bordered table-sm">
+                      <tbody>
+                      <tr>
+                          <td><b>Kelas</b> </td>
+                          <td><?=$kelas;?></td>
+                      </tr>
+                      <tr>
+                        <td><b>Kode Jurusan</b></td>
+                        <td>isi kode jurusan</td>
+                      </tr>
+                      <tr>
+                        <td><b>Kode Kurikulum</b></td>
+                        <td>isi kode Kurikulum</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+             
+                <br>
+        <div class="row">
+          <div class="col-lg-12">
+                <a href="../admin_backend_klsmatkul" class="btn btn-warning">
+                  <i class="nav-icon fas fa-chenvor-left"></i> kembali
+                </a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tambahdata" style="background-color:#86090f">
                 <i class="nav-icon fas fa-plus"></i>  Tambah Data
                 </button>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-importdata">
+                  <i class="nav-icon fas fa-file-excel"></i> Import Data
+                </button>
+                <a href="reset.php" class="btn btn-danger" onclick="return confirm('Anda akan menghapus seluruh data kelas mata kuliah?')">
+                  <i class="nav-icon fas fa-times"></i> Reset Data
+                </a>
                   <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
                     <tr>
-                 
+                      <th style="width:5%">No</th>
+                      <th><center>NIM</center></th>
+                      <th><center>Nama</center></th>
+                      <th><center>Aksi</center></th>
                     </tr>
                     </thead>
                   <tbody>
-                 
-                  </tbody>
+                  <?php
+                      $no = 1;
+                      $query_peserta_mk = mysqli_query($con, "SELECT id_klsmatkul, tbl_pesertamatkul.nim, nama FROM tbl_pesertamatkul, tbl_mahasiswa WHERE tbl_pesertamatkul.nim = tbl_mahasiswa.nim AND id_klsmatkul='$id_klsmatkul' ") or die (mysqli_error($con));
+
+                          if (mysqli_num_rows($query_peserta_mk) > 0)
+                          {
+                            while($data = mysqli_fetch_array($query_peserta_mk))
+                            {
+                        
+                                ?>
+                            <tr>
+                                 <td>
+                                  <?=$no++;?>
+                                  </td>
+
+                                  <td>
+                                   <h6>
+                                   <?=$data['nim'];?>
+                                   </h6>  
+                                  </td>
+
+                                  <td>
+                                   <h6>
+                                   <?=$data['nama'];?>
+                                   </h6>
+                                 </td>
+
+                                <td>
+                                     <center>
+                                      <a href="deletemhs.php?id=<?= $id_klsmatkul;?>&nim=<?=$data['nim'];?>" 
+                                      class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menghapus data mahasiswa [ <?=$data['nama'];?> - <?=$data['nim'];?> ] ?')"><i class="fas fa-trash"></i> Hapus</a> 
+                                     </center>
+                                </td>
+                                   
+                              </tr>
+
+                            <?php
+                          }
+
+                        }
+                        else
+                        {
+                          echo "<tr><td colspan=\"4\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
+                        }
+
+                          ?>
+                     </tbody>
                     <tfoot>
 
                     </tfoot>
                   </table>
+                    </div>
+                  </div>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -110,14 +219,14 @@ include '../sidebar_admin.php';
 include "../footer.php";
 ?>
 
-<div class="modal fade" id="modal-tambahperiode">
+<div class="modal fade" id="modal-tambahdata">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header" style="background-color:#86090f">
               <h5 class="modal-title">
               <font color="ffffff">
               <i class="nav-icon fas fa-plus"></i> 
-                Tambah Periode Akademik
+                Tambah Mahasiswa Kelas Mata Kuliah
               </font>
               </h5>
               
@@ -125,27 +234,22 @@ include "../footer.php";
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form class="form-horizontal" action="create.php" method="POST" >
+            <form class="form-horizontal" action="createmhs.php?id=<?=$id_klsmatkul;?>&id_periode=<?=$id_periode;?>" method="POST" >
             <div class="modal-body">
               <div class="form-group">
-                <label for="tahun akademik">Tahun Akademik</label>
-                        <select class="form-control" name="tahunakademik">
-                          <option>2018</option>
-                          <option>2019</option>
-                          <option>2020</option>
-                          <option>2021</option>
-                          <option>2022</option>
-                          <option>2023</option>
-                          <option>2024</option>
-                        </select>
+                <label for="mhs">Pilih Mahasiswa</label>
+                <select class="form-control" name="mhs">
+                    <?php
+                    $sql_mhs =  mysqli_query($con, "SELECT nim, Nama FROM tbl_mahasiswa") or die (mysqli_error($con));
+                    while($data_mhs = mysqli_fetch_array($sql_mhs)){
+                      ?>
+                      <option value = "<?=$data_mhs['nim'];?>"><b><?=$data_mhs['nim'];?></b> - <?=$data_mhs['Nama'];?></option>
+                      <?php
+                    }
+                    ?>
+                 </select>
               </div>
-              <div class="form-group">
-                <label for="tahun akademik">Semester</label>
-                        <select class="form-control" name="semester">
-                          <option>Ganjil</option>
-                          <option>Genap</option>
-                        </select>
-              </div>
+              
             </div>
             <div class="modal-footer pull-right">
               <button type="submit" class="btn btn-danger" name="tambahdata" style="background-color:#86090f"><i class="nav-icon fas fa-plus"></i>Tambah Data</button>
