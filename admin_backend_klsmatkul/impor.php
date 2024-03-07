@@ -24,7 +24,7 @@ error_reporting(0);
         $file_excel = PHPExcel_IOFactory::load($target_file);
         $data_excel = $file_excel->getActiveSheet()->toArray(null, true,true,true);
 
-        for ($j=5; $j <= count($data_excel); $j++)
+        for ($j=4 ; $j <= count($data_excel); $j++)
         {
           $kode_mk  = $data_excel[$j]['B'];
           $nid      = $data_excel[$j]['C'];
@@ -41,7 +41,6 @@ error_reporting(0);
                 if ((mysqli_num_rows($query_ceknid) > 0) && (mysqli_num_rows($query_cek_kdmk)) > 0 ) 
                 {
                   mysqli_query($con, "INSERT INTO tbl_klsmatkul VALUES ('','$nid','$kode_mk','$id_periode','$kelas')") or die (mysqli_eror($con));
-                  mysqli_query($con, "DELETE FROM tbl_klsmatkul WHERE kode_matkul='$kosong' OR nid='$kosong' OR id_periode='$kosong' OR kelas='$kosong'") or die (mysqli_eror($con));   
                 }else{
                 }
           }

@@ -308,7 +308,7 @@ include "../footer.php";
             </div>
             <div class="form-group col-lg-4">
             <center>
-             <h6><b>Template Dosen</b></h6>
+             <h6><b>Data Dosen</b></h6>
               <a href="expordosen.php" class="btn btn-info btn-sm">
                   <i class="nav-icon fas fa-user-circle"></i> Export
                 </a>
@@ -316,9 +316,9 @@ include "../footer.php";
             </div>
             <div class="form-group col-lg-4">
             <center>
-             <h6><b>Template Matkul</b></h6>
-              <a href="download.php?filename=templateklsmatkul.xls" class="btn btn-success btn-sm">
-                  <i class="nav-icon fas fa-file-excel"></i> Download
+             <h6><b>Data Matkul</b></h6>
+              <a href="expormk.php" class="btn btn-success btn-sm">
+                  <i class="nav-icon fas fa-file-excel"></i> Export
                 </a>
                 </center>
             </div>
@@ -326,6 +326,46 @@ include "../footer.php";
               
             <div class="modal-footer pull-right">
               <button type="submit" class="btn btn-danger" name="impor" style="background-color:#86090f"><i class="nav-icon fas fa-file-excel"></i>Import Data</button>
+              </form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+  </div>
+  <div class="modal fade" id="modal-importkonsol">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color:#86090f">
+              <h5 class="modal-title">
+              <font color="ffffff">
+              <i class="nav-icon fas fa-file-excel"></i> 
+                Import Data Kelas Mata Kuliah
+              </font>
+
+              </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form class="form-horizontal" action="impor.php?id_periode=<?=$periode_aktif;?>" method="POST" id="import" enctype="multipart/form-data"> 
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="Nama">Ambil file Excel</label>
+                <input type="file" id="file" name="file" class="form-control" accept=".xls,.xlsx" required>
+              </div>
+              
+              <div class="form-group" >
+              <center>
+              <h6><b>Template Excel</b></h6>
+              <a href="download.php?filename=templateklsmatkul.xls" class="btn btn-success btn-sm">
+                  <i class="nav-icon fas fa-file-excel"></i> Download
+                </a>
+              </center>           
+              </div>
+              
+            <div class="modal-footer pull-right">
+              <button type="submit" class="btn btn-danger" name="imporkonsol" style="background-color:#86090f"><i class="nav-icon fas fa-file-excel"></i>Import Data</button>
               </form>
             </div>
           </div>
