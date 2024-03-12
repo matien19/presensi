@@ -1,5 +1,5 @@
 <?php 
-$hal = 'dasbor';
+$hal = 'klsmatkul';
 session_start();
 if (isset($_SESSION['peran']))
 {
@@ -54,7 +54,7 @@ include '../sidebar_dosen.php';
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">
-            Dashboard dosen
+            Kelas Matkul dosen
           </div>
         </div>
       </div>
