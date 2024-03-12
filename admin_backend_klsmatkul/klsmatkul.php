@@ -281,7 +281,7 @@ include "../footer.php";
               <div class="form-group">
                 <label for="Nama">Ambil file Excel</label>
                 <input type="file" id="file" name="file" class="form-control" accept=".xls,.xlsx" required>
-                <input type="text" id="text" name="id_klsmk" class="form-control" value="<?=$id_klsmatkul;?>">
+                <input type="text" id="text" name="id_klsmk" class="form-control" value="<?=$id_klsmatkul;?>" hidden>
               </div>
              <h6>Template Excel</h6>
               <a href="download.php?filename=templatemhskls.xls" class="btn btn-success btn-sm">

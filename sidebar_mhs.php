@@ -1,6 +1,6 @@
 
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link ">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -8,10 +8,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="../mhs_backend_presensi" class="nav-link <?php if ($hal='presensi'){echo 'active';}?>">
               <i class="nav-icon fas fa-calendar-alt"></i>
               <p>
-                Periode Akademik
+                Presensi
               </p>
             </a>
           </li>

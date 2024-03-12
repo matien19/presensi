@@ -57,7 +57,7 @@
           </li>
           <li class="nav-item">
           <a href="../admin_backend_presensi" class="nav-link <?php if ($hal == 'presensi') { echo 'active'; } ?>">
-            <i class="nav-icon fas fa-clipboard "></i>
+            <i class="nav-icon fas fa-clipboard"></i>
             <p>
             Presensi
             </p>
@@ -80,7 +80,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="../admin_backend_matkul" class="nav-link">
+          <a href="../auth/logout.php" class="nav-link">
             <i class="nav-icon fas fa-sign-out-alt "></i>
             <p>
             Keluar

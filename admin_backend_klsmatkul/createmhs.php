@@ -28,7 +28,6 @@ require_once "../database/config.php";
 
           }, 1500);
           </script>
-
         ';
        }
       else
@@ -39,7 +38,7 @@ require_once "../database/config.php";
         <script>
           swal("Berhasil", "Data Mahasiswa telah ditambahkan", "success");
           
-          setTimeout(function(){ 
+          setTimeout(function() { 
           window.location.href = "../admin_backend_klsmatkul/klsmatkul.php?id='.$id_klsmk.'";
 
           }, 1500);

@@ -82,7 +82,7 @@ include '../sidebar_admin.php';
                   <tbody>
                   <?php
                       $no = 1;
-                      $query = "SELECT * FROM tbl_periode";
+                      $query = "SELECT * FROM tbl_periode ORDER BY tahun ASC" ;
                       $sql_periode = mysqli_query($con, $query) or die (mysqli_error($con));
                           if (mysqli_num_rows($sql_periode) > 0)
                           {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 05 Mar 2024 pada 00.00
+-- Waktu pembuatan: 12 Mar 2024 pada 04.21
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -41,8 +41,14 @@ CREATE TABLE `tbl_dosen` (
 --
 
 INSERT INTO `tbl_dosen` (`nid`, `nama`, `kontak`, `kelamin`, `stat`, `foto`) VALUES
-('1122312', 'stabilo', '+62899882742', 'L', 'A', 'template/img/dosen-1122312-1709560267.jpg'),
-('665546', 'cece', '+62899877777', 'P', 'A', 'template/img/dosen-665546-1709559192.png');
+('424210', 'aan1', '819988727', 'L', 'A', 'template/img/dosen-424210-1709715228.jpg'),
+('424211', 'aan2', '819988727', 'L', 'A', 'template/img/dosen-424211-1709715239.png'),
+('424212', 'aan3', '819988727', 'L', 'A', ''),
+('424213', 'aan4', '819988727', 'L', 'A', ''),
+('424214', 'aan5', '819988727', 'L', 'A', ''),
+('424215', 'aan6', '819988727', 'L', 'A', ''),
+('424216', 'aan7', '819988727', 'L', 'A', ''),
+('424217', 'aan8', '819988727', 'L', 'A', '');
 
 -- --------------------------------------------------------
 
@@ -54,15 +60,23 @@ CREATE TABLE `tbl_klsmatkul` (
   `Id` int(11) NOT NULL,
   `nid` varchar(10) NOT NULL,
   `kode_matkul` varchar(10) NOT NULL,
-  `id_periode` int(11) NOT NULL
+  `id_periode` int(11) NOT NULL,
+  `kelas` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `tbl_klsmatkul`
 --
 
-INSERT INTO `tbl_klsmatkul` (`Id`, `nid`, `kode_matkul`, `id_periode`) VALUES
-(1, '665546', 'A1', 4);
+INSERT INTO `tbl_klsmatkul` (`Id`, `nid`, `kode_matkul`, `id_periode`, `kelas`) VALUES
+(1, '424210', 'A1', 4, 'B'),
+(2, '424211', 'A2', 4, 'A'),
+(3, '424212', 'A3', 4, 'B'),
+(4, '424213', 'A4', 4, 'B'),
+(5, '424214', 'A5', 4, 'A'),
+(6, '424215', 'A6', 4, 'A'),
+(7, '424216', 'A7', 4, 'B'),
+(8, '424217', 'A8', 4, 'A');
 
 -- --------------------------------------------------------
 
@@ -84,8 +98,14 @@ CREATE TABLE `tbl_mahasiswa` (
 --
 
 INSERT INTO `tbl_mahasiswa` (`nim`, `nama`, `kelamin`, `nohp`, `stat`, `foto`) VALUES
-('42421071', 'Matien Hakim Falahudin Bachtiar', 'L', '+628998827278', 'A', 'template/imgmhs-42421071-1709556238.jpg'),
-('424210711', 'Riki', 'P', '+62899882742', 'A', 'template/imgmhs-424210711-1709556202.png');
+('42421071', 'matien', 'L', '+62819987727', 'A', 'template/img/mhs-42421071-1709716268.jpg'),
+('42421072', 'matiena', 'L', '+62819988728', 'A', ''),
+('42421073', 'matienb', 'L', '+62819989729', 'A', ''),
+('42421074', 'matienc', 'L', '+628199810727', 'A', ''),
+('42421075', 'matiend', 'L', '+62819987727', 'A', ''),
+('42421076', 'matiene', 'L', '+62819988728', 'A', ''),
+('42421077', 'matienf', 'L', '+62819989729', 'A', ''),
+('42421078', 'matieng', 'L', '+628199810727', 'A', '');
 
 -- --------------------------------------------------------
 
@@ -139,10 +159,22 @@ INSERT INTO `tbl_pengguna` (`Id`, `username`, `password`, `peran`, `nama`) VALUE
 (108, 'aan', 'ebba79a83e1cfef6d54fa5c33b2d5aa46f5e0df5', 'Admin', 'Aan'),
 (119, 'admin', 'e0c9035898dd52fc65c41454cec9c4d2611bfb37', 'Admin', 'aa'),
 (121, 'aa', 'e0c9035898dd52fc65c41454cec9c4d2611bfb37', 'Admin', 'aaa'),
-(231, '42421071', '2cb2a8dde81439f7420e18649521d853dfcc7810', 'mhs', 'Matien Hakim Falahudin Bachtiar'),
-(232, '424210711', '02e81df6135e7d310674978c7f45cf091c7a247c', 'mhs', 'Riki'),
-(233, '1122312', '075861142754d720c0825f78472995e0d6158f92', 'dosen', 'stabilo'),
-(234, '665546', '770e610ff60aa16fd63c3aabb34430b3d29d8ea2', 'dosen', 'cece');
+(250, '424210', 'a2e5000fe1b089f2a50d7601580789567529f699', 'dosen', 'aan1'),
+(251, '424211', 'd95c33b9a7f2581c63893f30579f9efa221b980d', 'dosen', 'aan2'),
+(252, '424212', '13e3c5350981964266ded89eaa83af8e4c7df034', 'dosen', 'aan3'),
+(253, '424213', '155403fff6a041dfd679e6f3c2079103d9d92e2d', 'dosen', 'aan4'),
+(254, '424214', 'a944be2a4ed62a73529332cb3afc2f198eca82c5', 'dosen', 'aan5'),
+(255, '424215', '425df859f17533b08d81763616df413e1f065946', 'dosen', 'aan6'),
+(256, '424216', '1cfd4be8da566286a34529857b5eb9b9a8c1cd4a', 'dosen', 'aan7'),
+(257, '424217', '3904a05de2322c7a3de2e0e8684c4facb4d4a9bf', 'dosen', 'aan8'),
+(259, '42421071', '2cb2a8dde81439f7420e18649521d853dfcc7810', 'mhs', 'matien'),
+(260, '42421072', '15fc78cc5e8376892f0661dbff46561f0dded61f', 'mhs', 'matiena'),
+(261, '42421073', 'e9dd9bed882957b1f452f2277664461f58d2dbcd', 'mhs', 'matienb'),
+(262, '42421074', '303c9ae20a0c7fdf7d24d11d99019244ebc86666', 'mhs', 'matienc'),
+(263, '42421075', '89fb0e5f1595a423317baf26fe024365f9404f10', 'mhs', 'matiend'),
+(264, '42421076', '291225cba25b9f7d718fa44183971caa1af73a84', 'mhs', 'matiene'),
+(265, '42421077', 'cc188cfce66684700c5b212a6fc4c5f6fc3090db', 'mhs', 'matienf'),
+(266, '42421078', 'b485cf483185240564e9719757954c0c00abace5', 'mhs', 'matieng');
 
 -- --------------------------------------------------------
 
@@ -164,7 +196,7 @@ CREATE TABLE `tbl_periode` (
 INSERT INTO `tbl_periode` (`Id`, `tahun`, `semester`, `stat`) VALUES
 (2, '2023', 'Genap', 'T'),
 (4, '2019', 'Ganjil', 'A'),
-(5, '2018', 'Ganjil', 'T');
+(7, '2019', 'Genap', 'T');
 
 -- --------------------------------------------------------
 
@@ -173,9 +205,70 @@ INSERT INTO `tbl_periode` (`Id`, `tahun`, `semester`, `stat`) VALUES
 --
 
 CREATE TABLE `tbl_pesertamatkul` (
-  `kode_klsmatkul` int(11) NOT NULL,
+  `id_klsmatkul` int(11) NOT NULL,
   `nim` varchar(10) NOT NULL,
   `id_periode` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `tbl_pesertamatkul`
+--
+
+INSERT INTO `tbl_pesertamatkul` (`id_klsmatkul`, `nim`, `id_periode`) VALUES
+(1, '42421071', 4),
+(1, '42421072', 4),
+(1, '42421073', 4),
+(1, '42421074', 4),
+(1, '42421075', 4),
+(1, '42421076', 4),
+(1, '42421077', 4),
+(1, '42421078', 4),
+(2, '42421076', 4),
+(3, '42421077', 4),
+(4, '42421078', 4),
+(5, '42421071', 4),
+(6, '42421072', 4),
+(7, '42421073', 4),
+(8, '42421074', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_presensi`
+--
+
+CREATE TABLE `tbl_presensi` (
+  `id_klsmatkul` int(11) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `nim` int(11) NOT NULL,
+  `kehadiran` enum('Y','N') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `tbl_presensi`
+--
+
+INSERT INTO `tbl_presensi` (`id_klsmatkul`, `tanggal`, `nim`, `kehadiran`) VALUES
+(1, '2024-03-07 19:16:07', 42421071, 'Y'),
+(1, '2024-03-07 19:16:07', 42421072, 'N'),
+(1, '2024-03-07 19:16:07', 42421073, 'N'),
+(1, '2024-03-07 19:16:07', 42421074, 'N'),
+(1, '2024-03-07 19:16:07', 42421075, 'N'),
+(1, '2024-03-11 23:38:26', 42421076, 'N'),
+(1, '2024-03-11 23:38:26', 42421077, 'N'),
+(1, '2024-03-11 23:38:26', 42421078, 'N'),
+(5, '2024-03-11 23:40:18', 42421071, 'N');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tbl_tglpresensi`
+--
+
+CREATE TABLE `tbl_tglpresensi` (
+  `Id` int(11) NOT NULL,
+  `id_klsmatkul` int(11) NOT NULL,
+  `tgl_presensi` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -226,7 +319,7 @@ ALTER TABLE `tbl_periode`
 -- AUTO_INCREMENT untuk tabel `tbl_klsmatkul`
 --
 ALTER TABLE `tbl_klsmatkul`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_matkul`
@@ -238,13 +331,13 @@ ALTER TABLE `tbl_matkul`
 -- AUTO_INCREMENT untuk tabel `tbl_pengguna`
 --
 ALTER TABLE `tbl_pengguna`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=235;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_periode`
 --
 ALTER TABLE `tbl_periode`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

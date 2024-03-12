@@ -20,7 +20,7 @@ else
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Panel | Tahun Periode </title>
+  <title>Admin Panel | Kelas Mata Kuliah </title>
 
 <?php 
 include "../linksheet.php";
@@ -66,13 +66,13 @@ include '../sidebar_admin.php';
                 </font>
                 <!-- /.card-header -->
                 <div class="card-body">
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tambahperiode" style="background-color:#86090f">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tambahdata" style="background-color:#86090f">
                 <i class="nav-icon fas fa-plus"></i>  Tambah Data
                 </button>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-importdata">
                   <i class="nav-icon fas fa-file-excel"></i> Import Data
                 </button>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-importdata">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-importkonsolidasi">
                   <i class="nav-icon fas fa-file-excel"></i> Import Data ALL
                 </button>
                  <a href="reset.php" class="btn btn-danger" onclick="return confirm('Anda akan menghapus seluruh data kelas mata kuliah?')">
@@ -180,7 +180,7 @@ include '../sidebar_admin.php';
                         }
                         else
                         {
-                          echo "<tr><td colspan=\"6\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
+                          echo "<tr><td colspan=\"7\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
                         }
 
                         ?>
@@ -212,7 +212,7 @@ include '../sidebar_admin.php';
 include "../footer.php";
 ?>
 
-<div class="modal fade" id="modal-tambahperiode">
+<div class="modal fade" id="modal-tambahdata">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header" style="background-color:#86090f">
@@ -274,7 +274,52 @@ include "../footer.php";
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
-            <!-- modal import data mhs -->
+    <!-- modal import data mhs -->
+<div class="modal fade" id="modal-importkonsolidasi">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color:#86090f">
+              <h5 class="modal-title">
+              <font color="ffffff">
+              <i class="nav-icon fas fa-file-excel"></i> 
+                Import Data Kelas Mata Kuliah
+              </font>
+
+              </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form class="form-horizontal" action="imporkonsol.php" method="POST" id="import" enctype="multipart/form-data"> 
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="Nama">Ambil file Excel</label>
+                <input type="file" id="file" name="filekonsol" class="form-control" accept=".xls,.xlsx" required>
+                
+              </div>
+              
+              <div class="row">
+              <div class="form-group" >
+              <center>
+              <h6><b>Template Excel</b></h6>
+              <a href="download.php?filename=templateklsmk-mhs.xls" class="btn btn-success btn-sm">
+                  <i class="nav-icon fas fa-file-excel"></i> Download
+                </a>
+              </center>
+            </div>
+            
+              </div>
+              
+            <div class="modal-footer pull-right">
+              <button type="submit" class="btn btn-danger" name="imporkonsolidasi" style="background-color:#86090f"><i class="nav-icon fas fa-file-excel"></i>Import Data</button>
+              </form>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+</div>
+</div>
 <div class="modal fade" id="modal-importdata">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -317,7 +362,7 @@ include "../footer.php";
             <div class="form-group col-lg-4">
             <center>
              <h6><b>Data Matkul</b></h6>
-              <a href="expormk.php" class="btn btn-success btn-sm">
+              <a href="expormk.php" class="btn btn-warning btn-sm">
                   <i class="nav-icon fas fa-file-excel"></i> Export
                 </a>
                 </center>
@@ -332,47 +377,8 @@ include "../footer.php";
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-  </div>
-  <div class="modal fade" id="modal-importkonsol">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header" style="background-color:#86090f">
-              <h5 class="modal-title">
-              <font color="ffffff">
-              <i class="nav-icon fas fa-file-excel"></i> 
-                Import Data Kelas Mata Kuliah
-              </font>
+</div>
 
-              </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form class="form-horizontal" action="impor.php?id_periode=<?=$periode_aktif;?>" method="POST" id="import" enctype="multipart/form-data"> 
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="Nama">Ambil file Excel</label>
-                <input type="file" id="file" name="file" class="form-control" accept=".xls,.xlsx" required>
-              </div>
-              
-              <div class="form-group" >
-              <center>
-              <h6><b>Template Excel</b></h6>
-              <a href="download.php?filename=templateklsmatkul.xls" class="btn btn-success btn-sm">
-                  <i class="nav-icon fas fa-file-excel"></i> Download
-                </a>
-              </center>           
-              </div>
-              
-            <div class="modal-footer pull-right">
-              <button type="submit" class="btn btn-danger" name="imporkonsol" style="background-color:#86090f"><i class="nav-icon fas fa-file-excel"></i>Import Data</button>
-              </form>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-  </div>
 </div>
 <!-- ./wrapper -->
 <?php 
