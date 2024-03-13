@@ -11,9 +11,9 @@ require_once "../database/config.php";
       
       $id_klsmatkul        = @$_GET['id'];
       $nim                 = @$_GET['nim'];
-      $hari_ini = date('Y-m-d H:i:s');
+      $hari_ini = date('Y-m-d');
       $hadir ='Y';
-      mysqli_query($con, "UPDATE tbl_presensi SET kehadiran='$hadir' WHERE id_klsmatkul='$id_klsmatkul' AND nim='$nim'") or die (mysqli_eror($con));
+      mysqli_query($con, "UPDATE tbl_presensi SET kehadiran='$hadir' WHERE id_klsmatkul='$id_klsmatkul' AND nim='$nim' AND tanggal='$hari_ini'") or die (mysqli_eror($con));
 
     ?>
 

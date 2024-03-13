@@ -1,5 +1,6 @@
 <?php 
 session_start();
+$hal = 'dasbor';
 if (isset($_SESSION['peran']))
 
 {

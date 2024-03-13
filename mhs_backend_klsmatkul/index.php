@@ -3,7 +3,7 @@ require_once '../database/config.php';
 $hal = 'klsmatkul';
 if (isset($_SESSION['peran']))
 {
-  if ($_SESSION['peran']!='dosen') 
+  if ($_SESSION['peran']!='mhs') 
   {
   echo "<script>window.location='../auth/logout.php';</script>";
   }
@@ -19,7 +19,7 @@ else
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dosen Panel | Kelas Mata Kuliah </title>
+  <title>Mahasiswa Panel | Kelas Mata Kuliah </title>
 
 <?php 
 include "../linksheet.php";
@@ -46,7 +46,7 @@ include '../navbar.php';
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
 <?php
-include '../sidebar_dosen.php';
+include '../sidebar_mhs.php';
 ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -85,17 +85,18 @@ include '../sidebar_dosen.php';
                     </thead>
                     <tbody>
                     <?php
+          
                       $no = 1;
-                      $nid = $_SESSION['user'];
+                      $nim = $_SESSION['user'];
                       $aktif = 'A';
                       $query_periode = mysqli_query($con, "SELECT Id FROM tbl_periode WHERE stat='$aktif'");
                       $data_periode_aktif = mysqli_fetch_assoc($query_periode);
                       $periode_aktif = $data_periode_aktif['Id'];
-                      $query = "SELECT * FROM tbl_klsmatkul WHERE id_periode ='$periode_aktif' AND nid='$nid'";
-                      $sql_klsmatkul = mysqli_query($con, $query) or die (mysqli_error($con));
-                      if (mysqli_num_rows($sql_klsmatkul) > 0)
+                      $query_kelas = mysqli_query($con, "SELECT * FROM tbl_pesertamatkul WHERE id_periode ='$periode_aktif' AND nim='$nim'") or die (mysqli_error($con));
+                      
+                      if (mysqli_num_rows($query_kelas) > 0)
                       {
-                        while($data = mysqli_fetch_array($sql_klsmatkul)) {
+                        while($data_peserta = mysqli_fetch_array($query_kelas)) {
                                 ?>
                             <tr>
                                  <td>
@@ -105,6 +106,10 @@ include '../sidebar_dosen.php';
                                   <td>
                                    <h6>
                                     <?php
+                                    $id_klsmk = $data_peserta['id_klsmatkul'];
+                                    $query = "SELECT * FROM tbl_klsmatkul WHERE id_periode ='$periode_aktif' AND Id='$id_klsmk'";
+                                    $sql_klsmatkul = mysqli_query($con, $query) or die (mysqli_error($con));   
+                                    $data = mysqli_fetch_array($sql_klsmatkul);     
                                     $kelas = $data['kelas'];
                                     $kode_mk = $data['kode_matkul'];
                                     $query_mk = mysqli_query($con, "SELECT nama_ind, nama_eng, sks FROM tbl_matkul WHERE kode_matkul ='$kode_mk'");
@@ -122,6 +127,7 @@ include '../sidebar_dosen.php';
                                   <td>
                                    <h6>
                                    <?php
+                                    $nid = $data['nid'];
                                     $query_dosen = mysqli_query($con, "SELECT nama FROM tbl_dosen WHERE nid ='$nid' ");
                                     $data_dosen = mysqli_fetch_assoc($query_dosen);
                                     $nama_dosen = $data_dosen['nama'];
@@ -170,7 +176,7 @@ include '../sidebar_dosen.php';
 
                         }else
                         {
-                          echo "<tr><td colspan=\"5\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
+                          echo "<tr><td colspan=\"6\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
                         }
 
                           ?>

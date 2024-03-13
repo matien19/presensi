@@ -12,8 +12,10 @@ require_once "../database/config.php";
                     <tbody>
 
                     <?php
+                      $id_klsmk = @$_GET['id_klsmk'];
+                      $hari_ini = date('Y-m-d');
                       $no = 1;
-                      $query_peserta = mysqli_query($con, "SELECT tbl_presensi.id_klsmatkul, tbl_presensi.nim, tbl_presensi.kehadiran, tbl_mahasiswa.nama FROM tbl_presensi,tbl_mahasiswa WHERE tbl_presensi.nim = tbl_mahasiswa.nim ORDER BY nim ASC") or die(mysqli_error($con));
+                      $query_peserta = mysqli_query($con, "SELECT tbl_presensi.id_klsmatkul, tbl_presensi.nim,  tbl_presensi.kehadiran, tbl_mahasiswa.nama FROM tbl_presensi,tbl_mahasiswa WHERE tbl_presensi.nim = tbl_mahasiswa.nim AND tbl_presensi.id_klsmatkul = '$id_klsmk' AND tbl_presensi.tanggal = '$hari_ini' ORDER BY nim ASC") or die(mysqli_error($con));
                       if (mysqli_num_rows($query_peserta) > 0)
                       {
                         while($data = mysqli_fetch_array($query_peserta))
@@ -23,6 +25,7 @@ require_once "../database/config.php";
                             <tr>
                                  <td>
                                   <?=$no++;?>
+
                                   </td>
 
                                   <td>

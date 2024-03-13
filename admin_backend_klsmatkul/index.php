@@ -191,10 +191,10 @@ include '../sidebar_admin.php';
                   </table>
                 </div>
                 <!-- /.card-body -->
-              </div>
+           </div>
               <!-- /.card -->
-            </div>
-            </div>
+          </div>
+        </div>
       </div>
       <!-- /.container-fluid -->
     </div>

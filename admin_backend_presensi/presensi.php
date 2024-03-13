@@ -71,8 +71,8 @@ include '../sidebar_admin.php';
                 <div class="row">
                   <div class="col-lg-6">
                     <?php
-                    $hari_ini = date('d F Y H:i');
-                    $hari_ini2 = date('Y-m-d H:i:s');
+                    $hari_ini = date('d-m-Y');
+                    $hari_ini2 = date('Y-m-d');
                     $id_klsmk = @$_GET['id_klsmk'];
                     $query_peserta_mk = mysqli_query($con, "SELECT id_klsmatkul, tbl_pesertamatkul.nim, nama FROM tbl_pesertamatkul, tbl_mahasiswa WHERE tbl_pesertamatkul.nim = tbl_mahasiswa.nim AND id_klsmatkul='$id_klsmk' ") or die (mysqli_error($con));
                     
@@ -80,7 +80,7 @@ include '../sidebar_admin.php';
                       
                     $kehadiran = 'N';
                     $nimmhs = $datapeserta['nim'];
-                    $querycekmhs = mysqli_query($con, "SELECT id_klsmatkul, nim FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND nim='$nimmhs'") or die (mysqli_error($con));
+                    $querycekmhs = mysqli_query($con, "SELECT id_klsmatkul, nim FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND nim='$nimmhs' AND tanggal='$hari_ini2'") or die (mysqli_error($con));
                     if (mysqli_num_rows($querycekmhs) == 0){
                      mysqli_query($con, "INSERT INTO tbl_presensi VALUES ('$id_klsmk','$hari_ini2','$nimmhs','$kehadiran')");
                     
@@ -93,7 +93,6 @@ include '../sidebar_admin.php';
 
                     }
                     
-                    $enc_idklsmk = SHA1($id_klsmk);
                     $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmk' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
                     $dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul);
                     $tahun = $dataklsmatkul['tahun'];
@@ -141,10 +140,11 @@ include '../sidebar_admin.php';
                     // atur level pemulihan datanya dengan QR_ECLEVEL_L | QR_ECLEVEL_M | QR_ECLEVEL_Q | QR_ECLEVEL_H
                     // atur pixel qrcode pada parameter ke 4
                     // atur jarak frame pada parameter ke 5
-                    QRcode::png($id_klsmk, $penyimpanan.$id_klsmk.round(microtime(true)).'.png', QR_ECLEVEL_L, 10, 5); 
+                    $nama_qr = $nama_ind.'-'.$kelas.'-'.$hari_ini;
+                    QRcode::png($id_klsmk, $penyimpanan.$nama_qr.'.png', QR_ECLEVEL_L, 10, 5); 
 
                     // menampilkan qrcode
-                    $file_qr = $penyimpanan.$id_klsmk.round(microtime(true)).'.png';
+                    $file_qr = $penyimpanan.$nama_qr.'.png';
                   ?>
                   <center>
                     <?php
@@ -160,9 +160,7 @@ include '../sidebar_admin.php';
 
                   <div class="col-lg-6" >
                   <div id="presensi">
-                    <?php
-                    include "tablepresensi.php";
-                    ?>
+                  
                  
                   </div>
                   </div>
@@ -206,7 +204,7 @@ include "../script.php";
     });
 
     function refreshTable(){
-        $('#presensi').load('tablepresensi.php', function(){
+        $('#presensi').load('tablepresensi.php?id_klsmk=<?= $id_klsmk;?>', function(){
            setTimeout(refreshTable, 10000);
         });
     }
