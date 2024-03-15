@@ -58,19 +58,11 @@ include '../sidebar_mhs.php';
           <div class="card">
              <div class="card-header" style="background-color:#86090f">
                <font color="ffffff">
-                <h3 class="card-title"> <i class="nav-icon fas fa-clipboard"></i></i> Data Presensi</h3>
+                <h3 class="card-title"> <i class="nav-icon fas fa-book"></i></i> Data Rekap Kelas Mata Kuliah</h3>
                 </div>
                 </font>
                 <!-- /.card-header -->
                 <div class="card-body">
-               
-              <a href="expordosen.php" class="btn btn-success ">
-                  <i class="nav-icon fas fa-file-excel"></i> Export Excel
-                </a>
-               
-              <a href="expormk.php" class="btn btn-danger ">
-                  <i class="nav-icon fas fa-file"></i> Export PDF
-                </a>
                  
                   <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
@@ -153,12 +145,6 @@ include '../sidebar_mhs.php';
                                  
                                 <td>
                                 <center>
-                               
-                                 
-                                <a href="presensi.php?id_klsmk=<?=$data['Id'];?>&dosen=<?=$nid;?>" class="btn btn-primary btn-sm">
-                                  <i class="fas fa-qrcode"></i>
-                                   QR Absen 
-                              </a> 
                                 
                                 <a href="histori.php?id_klsmk=<?=$data['Id'];?>" class="btn btn-warning btn-sm">
                                   <i class="fas fa-edit"></i>

@@ -90,8 +90,8 @@ include '../sidebar_admin.php';
                       <th><center>Aksi</center></th>
                     </tr>
                     </thead>
-                  <tbody>
-                  <?php
+                    <tbody>
+                   <?php
                       $no = 1;
                       $aktif = 'A';
                       $query_periode = mysqli_query($con, "SELECT Id FROM tbl_periode WHERE stat='$aktif'");
@@ -184,7 +184,7 @@ include '../sidebar_admin.php';
                         }
 
                         ?>
-                  </tbody>
+                   </tbody>
                     <tfoot>
 
                     </tfoot>

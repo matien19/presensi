@@ -72,19 +72,20 @@ include '../sidebar_dosen.php';
                   <i class="nav-icon fas fa-file"></i> Export PDF
                 </a>
                  
-                  <table id="example1" class="table table-bordered table-striped table-sm">
+                <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
                     <tr>
-                    <th>No</th>
-                    <th>Dosen</th>
-                    <th>Mata Kuliah</th>
-                    <th><center>Kelas</center></th>
-                    <th><center>Presentase</center></th>
-                    <th><center>Aksi</center></th>
+                      <th style="width:5%">No</th>
+                      <th style="width:25%">Mata Kuliah</th>
+                      <th>Dosen Pengampu</th>
+                      <th><center>Kelas</center></th>
+                      <th><center>SKS</center></th>
+                      <th><center>Jumlah Mahasiswa</center></th>
+                      <th><center>Aksi</center></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php
+                   <?php
                       $no = 1;
                       $nid = $_SESSION['user'];
                       $aktif = 'A';
@@ -96,7 +97,7 @@ include '../sidebar_dosen.php';
                       if (mysqli_num_rows($sql_klsmatkul) > 0)
                       {
                         while($data = mysqli_fetch_array($sql_klsmatkul)) {
-                                ?>
+                          ?>
                             <tr>
                                  <td>
                                   <?=$no++;?>
@@ -136,46 +137,47 @@ include '../sidebar_dosen.php';
                                   <?= $kelas;?>
                                   </center>
                                  </td>
-
                                  <td>
                                   <center>
-                                   <h6>
-                                   0%
-                                   </h6>
+                                  <?= $sks;?>
                                   </center>
                                  </td>
-                                 
+                                 <td>
+                                  <?php 
+                                  $id_klsmk = $data['Id'];
+                                  $querycekklsmk = mysqli_query($con, "SELECT COUNT(nim) AS jumlahmhs FROM tbl_pesertamatkul WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
+                                  $data_jumlah = mysqli_fetch_assoc($querycekklsmk);
+                                  $jumlahmhs = $data_jumlah['jumlahmhs'];
+                                  echo $jumlahmhs; 
+                                                                    
+                                  ?>
+                                  <center>
+                                  </center>
+                                 </td>
+
                                 <td>
-                                <center>
-                               
-                                 
-                                <a href="presensi.php?id_klsmk=<?=$data['Id'];?>&dosen=<?=$nid;?>" class="btn btn-primary btn-sm">
-                                  <i class="fas fa-qrcode"></i>
-                                   QR Absen 
-                              </a> 
-                                
-                                <a href="histori.php?id_klsmk=<?=$data['Id'];?>" class="btn btn-warning btn-sm">
+                                  <center>
+                                <a href="presensi.php?id_klsmk=<?=$id_klsmk;?>" class="btn btn-info btn-sm">
                                   <i class="fas fa-edit"></i>
-                                   Histori
-                              </a> 
-                                   
-                               
+                                   Presensi
+                                </a>
+                                <a href="histori.php?id=<?=$data['Id'];?>"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Histori</a> 
                               </center>
                                 </td>
                                    
                               </tr>
 
                             <?php
-                        }
+                          }
 
-                        }else
+                        }
+                        else
                         {
-                          echo "<tr><td colspan=\"5\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
+                          echo "<tr><td colspan=\"7\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
                         }
 
-                          ?>
-
-                  </tbody>
+                        ?>
+                   </tbody>
                     <tfoot>
 
                     </tfoot>
