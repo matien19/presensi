@@ -150,20 +150,19 @@ include '../sidebar_admin.php';
                                  
                                 <td>
                                 <center>
-                               
                                  
                                 <a href="presensi.php?id_klsmk=<?=$data['Id'];?>&dosen=<?=$nid;?>" class="btn btn-primary btn-sm">
                                   <i class="fas fa-qrcode"></i>
                                    QR Absen 
-                              </a> 
+                                </a> 
                                 <a href="#" class="btn btn-success btn-sm" >
                                   <i class="fas fa-file-excel"></i>
                                    Export Excel
-                              </a> 
-                                <a href="#" class="btn btn-danger btn-sm">
+                                </a> 
+                                <a href="eksporpdf.php?id_klsmk=<?= $data['Id']?>" class="btn btn-danger btn-sm" target="_blank" rel="noopener noreferrer">
                                   <i class="fas fa-file"></i>
                                   Export PDF
-                              </a> 
+                                </a> 
                                 <a href="histori.php?id_klsmk=<?=$data['Id'];?>" class="btn btn-warning btn-sm">
                                   <i class="fas fa-edit"></i>
                                    Histori

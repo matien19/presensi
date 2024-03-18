@@ -146,10 +146,7 @@ include '../sidebar_mhs.php';
                                 <td>
                                 <center>
                                 
-                                <a href="histori.php?id_klsmk=<?=$data['Id'];?>" class="btn btn-warning btn-sm">
-                                  <i class="fas fa-edit"></i>
-                                   Histori
-                              </a> 
+                                
                                    
                                
                               </center>

@@ -29,11 +29,11 @@ error_reporting(0);
       <div class="session-carousel slide" data-ride="carousel" data-interval="3000">
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
-          <div class="item active" style="background-image:url(img/download1.jpg);background-size:cover;background-repeat: no-repeat;background-position: 50% 50%;">
+          <div class="item active" style="background-image:url(../img/upb.jpg);background-size:cover;background-repeat: no-repeat;background-position: 50% 50%;">
           </div>
-           <div class="item" style="background-image:url(img/download2.jpg);background-size:cover;background-repeat: no-repeat;background-position: 50% 50%;">
+           <div class="item" style="background-image:url(../img/upb1.jpg);background-size:cover;background-repeat: no-repeat;background-position: 50% 50%;">
           </div>
-          <div class="item" style="background-image:url(img/download.jpg);background-size:cover;background-repeat: no-repeat;background-position: 50% 50%;">
+          <div class="item" style="background-image:url(../img/upb2.jpg);background-size:cover;background-repeat: no-repeat;background-position: 50% 50%;">
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@ error_reporting(0);
           <form role="form" class="form-layout" action="" method="post">
             <div class="text-center m-b">    
 
-              <img src="img/logo-peradaban.png?>" style='width:300px; height:100px;'/> 
+              <img src="../img/logo-peradaban.png?>" style='width:300px; height:100px;'/> 
               <h4 class="text-uppercase"><b><font color="#000000">SISTEM PRESENSI MAHASISWA</font></b></h4>
               <h4 class="text-uppercase"><font color="#000000">UNIVERSITAS PERADABAN</font></h4>
             </div>
@@ -54,7 +54,7 @@ error_reporting(0);
               <!-- <a href="lupapassword.php"><font color="#ffffff">Lupa Password?</font></a>
              --></div>
               
-               <button class="btn btn-warning btn-block btn-lg" type="submit" name= "login" style="background-color:#86090f;"><font color="#ffffff"><img src="img/personkey-white.png">&nbsp<b>Login</b></font></button>
+               <button class="btn btn-warning btn-block btn-lg" type="submit" name= "login" style="background-color:#86090f;"><font color="#ffffff"><img src="../img/personkey-white.png">&nbsp<b>Login</b></font></button>
 
 <?php 
                         if(isset($_POST['login']))

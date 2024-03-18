@@ -76,10 +76,10 @@ include '../sidebar_dosen.php';
                     <thead>
                     <tr>
                       <th style="width:5%">No</th>
-                      <th style="width:25%">Mata Kuliah</th>
+                      <th style="width:17%">Mata Kuliah</th>
                       <th>Dosen Pengampu</th>
                       <th><center>Kelas</center></th>
-                      <th><center>SKS</center></th>
+                      <th style="width:5%"><center>SKS</center></th>
                       <th><center>Jumlah Mahasiswa</center></th>
                       <th><center>Aksi</center></th>
                     </tr>
@@ -158,10 +158,18 @@ include '../sidebar_dosen.php';
                                 <td>
                                   <center>
                                 <a href="presensi.php?id_klsmk=<?=$id_klsmk;?>" class="btn btn-info btn-sm">
-                                  <i class="fas fa-edit"></i>
+                                  <i class="fas fa-qrcode"></i>
                                    Presensi
                                 </a>
-                                <a href="histori.php?id=<?=$data['Id'];?>"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Histori</a> 
+                                <a href="#" class="btn btn-success btn-sm" >
+                                  <i class="fas fa-file-excel"></i>
+                                   Export Excel
+                                </a> 
+                                <a href="eksporpdf.php?id_klsmk=<?= $id_klsmk?>" class="btn btn-danger btn-sm" target="_blank" rel="noopener noreferrer">
+                                  <i class="fas fa-file"></i>
+                                  Export PDF
+                                </a> 
+                                <a href="histori.php?id=<?=$id_klsmk;?>"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Histori</a> 
                               </center>
                                 </td>
                                    

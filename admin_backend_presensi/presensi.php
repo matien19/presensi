@@ -88,9 +88,7 @@ include '../sidebar_admin.php';
                       if (mysqli_num_rows($query_cektgl) == 0){
                        mysqli_query($con, "INSERT INTO tbl_presensi VALUES ('',$id_klsmk','$hari_ini2')");
                       }
-                    } else {
-                    }
-
+                    } 
                     }
                     
                     $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmk' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));

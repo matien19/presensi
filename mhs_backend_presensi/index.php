@@ -147,8 +147,13 @@ include '../sidebar_mhs.php';
                                           <i class="fas fa-qrcode"></i>
                                            Presensi 
                                         </a>
+                                       
                                         <?php } 
                                       ?>
+                                       <a href="histori.php?id_klsmk=<?=$id_klsmatkul;?>" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                            Histori
+                                        </a> 
                                   
                               </center>
                                 </td>

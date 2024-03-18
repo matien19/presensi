@@ -15,15 +15,6 @@
               </p>
             </a>
           </li>
-          
-          <li class="nav-item">
-            <a href="../mhs_backend_klsmatkul" class="nav-link  <?php if ($hal=='klsmatkul'){echo 'active';}?>">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-                Rekap Presensi
-              </p>
-            </a>
-          </li>
           <li class="nav-item">
           <a href="../ganti_pw" class="nav-link <?php if ($hal == 'gantipassword') { echo 'active'; } ?>">
             <i class="nav-icon fas fa-lock "></i>
