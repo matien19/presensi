@@ -29,7 +29,7 @@ function Header()
     $this->Cell(30,4,'email: admin@peradaban.ac.id, IG: bem_upb, twitter: bem_peradaban,',0,1,'C');
     //line
     $this->SetLineWidth(1);
-    $this->Line(0,40,250,40);
+    $this->Line(10,40,200,40);
     // Line break
     $this->Ln(10);
 }

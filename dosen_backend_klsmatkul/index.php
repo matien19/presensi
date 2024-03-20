@@ -12,6 +12,8 @@ else
 {
   echo "<script>window.location='../auth/logout.php';</script>";
 }
+
+$nid = $_SESSION['user'];
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +70,7 @@ include '../sidebar_dosen.php';
                   <i class="nav-icon fas fa-file-excel"></i> Export Excel
                 </a>
                
-              <a href="expormk.php" class="btn btn-danger ">
+              <a href="eksporpdfall.php?nid=<?= $nid; ?>" class="btn btn-danger" target="_blank" rel="noopener noreferrer">
                   <i class="nav-icon fas fa-file"></i> Export PDF
                 </a>
                  
@@ -87,7 +89,6 @@ include '../sidebar_dosen.php';
                     <tbody>
                    <?php
                       $no = 1;
-                      $nid = $_SESSION['user'];
                       $aktif = 'A';
                       $query_periode = mysqli_query($con, "SELECT Id FROM tbl_periode WHERE stat='$aktif'");
                       $data_periode_aktif = mysqli_fetch_assoc($query_periode);

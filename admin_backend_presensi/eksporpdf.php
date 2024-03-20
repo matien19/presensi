@@ -29,7 +29,7 @@ function Header()
     $this->Cell(30,4,'email: admin@peradaban.ac.id, IG: -, twitter: -,',0,1,'C');
     //line
     $this->SetLineWidth(0.6);
-    $this->Line(0,40,250,40);
+    $this->Line(10,40,200,40);
     // Line break
     $this->Ln(10);
 }
@@ -63,13 +63,14 @@ while ($dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul)){
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
-$pdf->Cell(80);
 // Title
+$pdf->Cell(80);
 $pdf->SetFont('Arial','B',14);
 $pdf->Cell(30,8,'Laporan Presensi Mahasiswa',0,1,'C');
 $pdf->Cell(80);
 $pdf->Cell(30,8,'Periode 2023 - 2024',0,1,'C');
 $pdf->Ln(5);
+//tahun akademik
 $pdf->SetFont('Arial','B',10);
 $pdf->Cell(40,6,'Tahun Akademik',0,0,'L');
 $pdf->Cell(35,6,': '.$tahun.' - '.$semester,0,1,'L');
@@ -80,12 +81,13 @@ $pdf->Cell(35,6,': '.$nama_ind,0,1,'L');
 $pdf->Cell(40,6,'Kelas',0,0,'L');
 $pdf->Cell(35,6,': '.$kelas,0,1,'L');
 $pdf->Ln(5);
+//table presensi
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(10,6,'No.',1,0,'C');
 $pdf->Cell(30,6,'NIM',1,0,'C');
 $pdf->Cell(60,6,'Nama Mahasiswa',1,0,'C');
 $pdf->Cell(30,6,'Pertemuan',1,0,'C');
-$pdf->Cell(25,6,'Hadir',1,0,'C');
+$pdf->Cell(25,6,'Kehadiran',1,0,'C');
 $pdf->Cell(30,6,'Presentase',1,1,'C');
 $pdf->SetFont('Arial','',12);
 $no = 1;
@@ -108,5 +110,11 @@ if (mysqli_num_rows($query_peserta) > 0)
         $pdf->Cell(30,6,$presentase.'%',1,1,'C');
     }
 }
+$pdf->Ln(5);
+$pdf->Cell(150);
+$pdf->Cell(30,8,'Tanjung, '.date('d M Y'),0,1,'C');
+$pdf->Ln(15);
+$pdf->Cell(150);
+$pdf->Cell(30,8,$nama_dosen,0,1,'C');
 $pdf->Output();
 ?>

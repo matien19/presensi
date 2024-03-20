@@ -71,7 +71,7 @@ include '../sidebar_admin.php';
                   <i class="nav-icon fas fa-file-excel"></i> Export Excel
                 </a>
                
-              <a href="expormk.php" class="btn btn-danger ">
+              <a href="eksporpdfall.php" class="btn btn-danger" target="_blank" rel="noopener noreferrer">
                   <i class="nav-icon fas fa-file"></i> Export PDF
                 </a>
                  
