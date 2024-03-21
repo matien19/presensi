@@ -83,6 +83,7 @@ include '../sidebar_dosen.php';
                       <th><center>Kelas</center></th>
                       <th style="width:5%"><center>SKS</center></th>
                       <th><center>Jumlah Mahasiswa</center></th>
+                      <th><center>Presentase</center></th>
                       <th><center>Aksi</center></th>
                     </tr>
                     </thead>
@@ -90,6 +91,8 @@ include '../sidebar_dosen.php';
                    <?php
                       $no = 1;
                       $aktif = 'A';
+                      $hadir = 'Y';
+                      $pertemuan = 16;
                       $query_periode = mysqli_query($con, "SELECT Id FROM tbl_periode WHERE stat='$aktif'");
                       $data_periode_aktif = mysqli_fetch_assoc($query_periode);
                       $periode_aktif = $data_periode_aktif['Id'];
@@ -152,11 +155,27 @@ include '../sidebar_dosen.php';
                                   echo $jumlahmhs; 
                                                                     
                                   ?>
+                                  <td>
+                                  <center>
+                                   <h6>
+                                   <?php 
+                                   $query_total_peserta = mysqli_query($con, "SELECT * FROM tbl_pesertamatkul WHERE id_klsmatkul='$id_klsmk' AND id_periode ='$periode_aktif'") or die(mysqli_error($con));
+                                   $total_peserta = mysqli_num_rows($query_total_peserta);
+                                   $total_presensi = $pertemuan*$total_peserta;
+                                   $query_total_hadir = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND kehadiran = '$hadir'") or die(mysqli_error($con));
+                                   $total_hadir = mysqli_num_rows($query_total_hadir);
+                                   $presentase = ($total_hadir/$total_presensi)*100;
+                                   echo $presentase.'%';
+                                   ?>
+                                   
+                                   </h6>
+                                  </center>
+                                 </td>
                                   <center>
                                   </center>
                                  </td>
 
-                                <td>
+                                <td style="width:45%;">
                                   <center>
                                 <a href="presensi.php?id_klsmk=<?=$id_klsmk;?>" class="btn btn-info btn-sm">
                                   <i class="fas fa-qrcode"></i>

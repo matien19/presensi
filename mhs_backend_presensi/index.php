@@ -73,6 +73,7 @@ include '../sidebar_mhs.php';
                       <th style="width:25%">Mata Kuliah</th>
                       <th>Dosen Pengampu</th>
                       <th><center>Kelas</center></th>
+                      <th><center>Presentase</center></th>
                       <th><center>Aksi</center></th>
                     </tr>
                     </thead>
@@ -81,6 +82,8 @@ include '../sidebar_mhs.php';
                       $no = 1;
                       $aktif = 'A';
                       $nimmhs = $_SESSION['user'];
+                      $pertemuan = 16;
+                      $hadir = 'Y';
                       $query_periode = mysqli_query($con, "SELECT Id FROM tbl_periode WHERE stat='$aktif'");
                       $data_periode_aktif = mysqli_fetch_assoc($query_periode);
                       $periode_aktif = $data_periode_aktif['Id'];
@@ -134,7 +137,17 @@ include '../sidebar_mhs.php';
                                   <center>
                                   <?= $kelas;?>
                                   </center>
-                            </td>
+                                 </td>
+                                 <td>
+                                  <center>
+                                    <?php 
+                                  $query_hadir = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE nim = $nimmhs AND id_klsmatkul='$id_klsmatkul' AND kehadiran = '$hadir'") or die(mysqli_error($con));
+                                  $kehadiran = mysqli_num_rows($query_hadir);
+                                  $presentase = ($kehadiran/$pertemuan)*100;
+                                  echo $presentase.'%';
+                                  ?>
+                                  </center>
+                                 </td>
 
                                 <td>
                                   <center>

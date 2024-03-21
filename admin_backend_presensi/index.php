@@ -90,6 +90,8 @@ include '../sidebar_admin.php';
                     <?php
                       $no = 1;
                       $aktif = 'A';
+                      $hadir = 'Y';
+                      $pertemuan = 16;
                       $query_periode = mysqli_query($con, "SELECT Id FROM tbl_periode WHERE stat='$aktif'");
                       $data_periode_aktif = mysqli_fetch_assoc($query_periode);
                       $periode_aktif = $data_periode_aktif['Id'];
@@ -98,6 +100,7 @@ include '../sidebar_admin.php';
                       if (mysqli_num_rows($sql_klsmatkul) > 0)
                       {
                         while($data = mysqli_fetch_array($sql_klsmatkul)) {
+                          $id_klsmk = $data['Id'];
                                 ?>
                             <tr>
                                  <td>
@@ -143,7 +146,16 @@ include '../sidebar_admin.php';
                                  <td>
                                   <center>
                                    <h6>
-                                   0%
+                                   <?php 
+                                   $query_total_peserta = mysqli_query($con, "SELECT * FROM tbl_pesertamatkul WHERE id_klsmatkul='$id_klsmk' AND id_periode ='$periode_aktif'") or die(mysqli_error($con));
+                                   $total_peserta = mysqli_num_rows($query_total_peserta);
+                                   $total_presensi = $pertemuan*$total_peserta;
+                                   $query_total_hadir = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND kehadiran = '$hadir'") or die(mysqli_error($con));
+                                   $total_hadir = mysqli_num_rows($query_total_hadir);
+                                   $presentase = ($total_hadir/$total_presensi)*100;
+                                   echo $presentase.'%';
+                                   ?>
+                                   
                                    </h6>
                                   </center>
                                  </td>
@@ -151,7 +163,7 @@ include '../sidebar_admin.php';
                                 <td>
                                 <center>
                                  
-                                <a href="presensi.php?id_klsmk=<?=$data['Id'];?>&dosen=<?=$nid;?>" class="btn btn-primary btn-sm">
+                                <a href="presensi.php?id_klsmk=<?=$id_klsmk;?>&dosen=<?=$nid;?>" class="btn btn-primary btn-sm">
                                   <i class="fas fa-qrcode"></i>
                                    QR Absen 
                                 </a> 
@@ -159,11 +171,11 @@ include '../sidebar_admin.php';
                                   <i class="fas fa-file-excel"></i>
                                    Export Excel
                                 </a> 
-                                <a href="eksporpdf.php?id_klsmk=<?= $data['Id']?>" class="btn btn-danger btn-sm" target="_blank" rel="noopener noreferrer">
+                                <a href="eksporpdf.php?id_klsmk=<?= $id_klsmk?>" class="btn btn-danger btn-sm" target="_blank" rel="noopener noreferrer">
                                   <i class="fas fa-file"></i>
                                   Export PDF
                                 </a> 
-                                <a href="histori.php?id_klsmk=<?=$data['Id'];?>" class="btn btn-warning btn-sm">
+                                <a href="histori.php?id_klsmk=<?=$id_klsmk;?>" class="btn btn-warning btn-sm">
                                   <i class="fas fa-edit"></i>
                                    Histori
                               </a> 
