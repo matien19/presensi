@@ -69,17 +69,137 @@ include '../sidebar_admin.php';
                  
                   <table id="example1" class="table table-bordered table-striped table-sm">
                     <thead>
+                    <tr >
+                    <th style="width:5%" rowspan="2">No</th>
+                    <th rowspan="2"><center>Nama Mahasiswa</center></th>
+                    <th colspan="16"><center>Pertemuan</center></th>
+                    </tr>
                     <tr>
-                    <th style="width:5%">No</th>
-                    <th><center>Nama Mahasiswa</center></th>
-                    <th><center>Presentase Hadir</center></th>
-                    <th><center>Aksi</center></th>
+                    <td width:3%>
+                                  <center>
+                                   <h6>
+                                   1
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   2
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   3
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   4
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   5
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   6
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   7
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   UTS
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   9
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   10
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   11
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   12
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   13
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   14
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   15
+                                   </h6>
+                                  </center>
+                                 </td>
+<td width:3%>
+                                  <center>
+                                   <h6>
+                                   UAS
+                                   </h6>
+                                  </center>
+                                 </td>
                     </tr>
                     </thead>
                     <tbody>
                     <?php
                       $no = 1;
-                      if ($no){
+                      $id_klsmk = @$_GET['id_klsmk'];
+                      $sql_klsmk = mysqli_query($con, "SELECT nim FROM tbl_pesertamatkul WHERE id_klsmatkul = '$id_klsmk'") or die(mysqli_error($con));
+                      if (mysqli_num_rows($sql_klsmk) > 0) {
+                      while ($data = mysqli_fetch_array($sql_klsmk)) {
+                        $nim = $data['nim'];
+                        $sql_mhs = mysqli_query($con, "SELECT nama FROM tbl_mahasiswa WHERE nim = '$nim'") or die(mysqli_error($con));
+                        $nama_mhs = mysqli_fetch_assoc($sql_mhs);
+                        $nama = $nama_mhs['nama'];
                                 ?>
                             <tr>
                                  <td>
@@ -89,31 +209,38 @@ include '../sidebar_admin.php';
                                  <td>
                                   <center>
                                    <h6>
-                                   Nama
+                                   <?=$nama;?>
                                    </h6>
                                   </center>
                                  </td>
                                  
-                                 <td>
+                                 <?php
+                                 $sql_presensi =  mysqli_query($con, "SELECT kehadiran FROM tbl_presensi WHERE id_klsmatkul = '$id_klsmk' AND nim = '$nim'") or die(mysqli_error($con));
+                                 $jumlah = mysqli_num_rows($sql_presensi);
+                                 $data_kehadiran = mysqli_fetch_array($sql_presensi);
+                                 
+                                 for ($i=1; $i<=16;$i++) {
+                                  $src = '../img/ket/not.png';
+                                  if ($i <= $jumlah) {
+                                    $absen = $data_kehadiran['kehadiran'];
+                                    if ($absen == 'Y') {
+                                      $src = '../img/ket/ya.png';
+                                    }
+                                  } echo '<td>
                                   <center>
                                    <h6>
-                                   presentase
+                                   <img src="'.$src.'" alt="absen" width="20px">
                                    </h6>
                                   </center>
-                                 </td>
+                                 </td>';
+                                 }
+                                 ?>
                                  
-                                <td>
-                                <center>
-                                <a href="histori.php" class="btn btn-warning btn-sm">
-                                  <i class="fas fa-edit"></i>
-                                   Detail
-                                </a> 
-                              </center>
-                                </td>
-                                   
                               </tr>
 
                             <?php
+                      }
+
                         }else
                         {
                           echo "<tr><td colspan=\"4\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
