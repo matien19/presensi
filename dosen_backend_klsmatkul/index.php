@@ -189,7 +189,7 @@ include '../sidebar_dosen.php';
                                   <i class="fas fa-file"></i>
                                   Export PDF
                                 </a> 
-                                <a href="histori.php?id=<?=$id_klsmk;?>"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Histori</a> 
+                                <a href="histori.php?id_klsmk=<?=$id_klsmk;?>"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Histori</a> 
                               </center>
                                 </td>
                                    
