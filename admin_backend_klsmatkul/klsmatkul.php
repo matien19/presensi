@@ -68,7 +68,7 @@ include '../sidebar_admin.php';
                 <div class="card-body">
                     <?php
                     $id_klsmatkul = @$_GET['id'];
-                    $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmatkul' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
+                    $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas, tbl_klsmatkul.kode_jurusan as kode_jurusan FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmatkul' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
                     $dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul);
                     $tahun = $dataklsmatkul['tahun'];
                     $semester = $dataklsmatkul['semester'];
@@ -77,6 +77,7 @@ include '../sidebar_admin.php';
                     $nama_ind = $dataklsmatkul['nama_mk_ind'];
                     $nama_eng = $dataklsmatkul['nama_mk_eng'];
                     $kelas = $dataklsmatkul['kelas'];
+                    $kd_jurusan = $dataklsmatkul['kode_jurusan'];
                     ?>
                 <div class="row">
                   <div class="col-lg-6">
@@ -107,7 +108,7 @@ include '../sidebar_admin.php';
                       </tr>
                       <tr>
                         <td><b>Kode Jurusan</b></td>
-                        <td>isi kode jurusan</td>
+                        <td><?= $kd_jurusan;?></td>
                       </tr>
                       <tr>
                         <td><b>Kode Kurikulum</b></td>

@@ -16,9 +16,9 @@
           </li>
         <li class="nav-item">
           <a href="../dosen_backend_laporan" class="nav-link <?php if ($hal == 'laporan') { echo 'active'; } ?>">
-            <i class="nav-icon fas fa-file "></i>
+            <i class="nav-icon fas fa-chart-line "></i>
             <p>
-            Laporan
+            Grafik Presensi
             </p>
           </a>
         </li>

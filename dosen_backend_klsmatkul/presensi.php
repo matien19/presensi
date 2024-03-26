@@ -75,8 +75,8 @@ include '../sidebar_dosen.php';
                     $hari_ini = date('d-m-Y');
                     $hari_ini2 = date('Y-m-d');
                     $id_klsmk = @$_GET['id_klsmk'];
-                    $query_peserta_mk = mysqli_query($con, "SELECT id_klsmatkul, tbl_pesertamatkul.nim, nama FROM tbl_pesertamatkul, tbl_mahasiswa WHERE tbl_pesertamatkul.nim = tbl_mahasiswa.nim AND id_klsmatkul='$id_klsmk' ") or die (mysqli_error($con));
                     $state = 'Y';
+                    $query_peserta_mk = mysqli_query($con, "SELECT id_klsmatkul, tbl_pesertamatkul.nim, nama FROM tbl_pesertamatkul, tbl_mahasiswa WHERE tbl_pesertamatkul.nim = tbl_mahasiswa.nim AND id_klsmatkul='$id_klsmk' ") or die (mysqli_error($con));
                     
                     while($datapeserta = mysqli_fetch_array($query_peserta_mk)) {
                       
@@ -85,23 +85,20 @@ include '../sidebar_dosen.php';
                     $querycekmhs = mysqli_query($con, "SELECT id_klsmatkul, nim FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND nim='$nimmhs' AND tanggal='$hari_ini2'") or die (mysqli_error($con));
                     if (mysqli_num_rows($querycekmhs) == 0){
                      mysqli_query($con, "INSERT INTO tbl_presensi VALUES ('$id_klsmk','$hari_ini2','$nimmhs','$kehadiran')");
+                    }
                     
-                    $query_cektgl = mysqli_query($con, "SELECT id_klsmatkul, tgl_presensi FROM tbl_tglpresensi WHERE id_klsmatkul='$id_klsmk' AND tgl_presensi='$hari_ini2'") or die (mysqli_error($con));
-                      if (mysqli_num_rows($query_cektgl) == 0){
-                       mysqli_query($con, "INSERT INTO tbl_presensi VALUES ('',$id_klsmk','$hari_ini2')") ;
+                    $query_cektgl = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND tanggal ='$hari_ini2'") or die (mysqli_error($con));
+                      if (mysqli_num_rows($query_cektgl) > 0){
                       
-                       $query_state = mysqli_query($con, "SELECT * FROM tbl_temp_presensi WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
+                       $query_state = mysqli_query($con, "SELECT state FROM tbl_temp_presensi WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
                       
-                         if (mysqli_num_rows($query_state) == 0){
-                       
-                          mysqli_query($con, "INSERT INTO tbl_temp_presensi VALUES ('$id_klsmk','$state')") or die (mysqli_error($con));
-                         } else {
+                         if (mysqli_num_rows($query_state) > 0){
                           mysqli_query($con, "UPDATE tbl_temp_presensi SET state='$state' WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
+                          
+                         } else {
+                          mysqli_query($con, "INSERT INTO tbl_temp_presensi VALUES ('$id_klsmk','$state')") or die (mysqli_error($con));
                          }
                       }
-                    } else {
-                    }
-
                     }
                     
                     $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmk' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
@@ -171,8 +168,6 @@ include '../sidebar_dosen.php';
                   <br> pada : <?= $hari_ini;?> 
                   <br> Berakhir Pada : <label for="timer"><div id="timer"></div></label>
                  </h6>
-                  <label></label>
-                 
                   </center>
                   </div>
 
@@ -242,6 +237,7 @@ include "../script.php";
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("timer").innerHTML = "Waktu telah habis!";
+                window.location.href = "tutuppresensi.php?id=<?= $id_klsmk;?>";
             }
         }, 1000);
     }

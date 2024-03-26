@@ -74,6 +74,7 @@ include '../sidebar_admin.php';
                     $hari_ini = date('d-m-Y');
                     $hari_ini2 = date('Y-m-d');
                     $id_klsmk = @$_GET['id_klsmk'];
+                    $state = 'Y';
                     $query_peserta_mk = mysqli_query($con, "SELECT id_klsmatkul, tbl_pesertamatkul.nim, nama FROM tbl_pesertamatkul, tbl_mahasiswa WHERE tbl_pesertamatkul.nim = tbl_mahasiswa.nim AND id_klsmatkul='$id_klsmk' ") or die (mysqli_error($con));
                     
                     while($datapeserta = mysqli_fetch_array($query_peserta_mk)) {
@@ -83,12 +84,20 @@ include '../sidebar_admin.php';
                     $querycekmhs = mysqli_query($con, "SELECT id_klsmatkul, nim FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND nim='$nimmhs' AND tanggal='$hari_ini2'") or die (mysqli_error($con));
                     if (mysqli_num_rows($querycekmhs) == 0){
                      mysqli_query($con, "INSERT INTO tbl_presensi VALUES ('$id_klsmk','$hari_ini2','$nimmhs','$kehadiran')");
+                    }
                     
-                    $query_cektgl = mysqli_query($con, "SELECT id_klsmatkul, tgl_presensi FROM tbl_tglpresensi WHERE id_klsmatkul='$id_klsmk' AND tgl_presensi='$hari_ini2'") or die (mysqli_error($con));
-                      if (mysqli_num_rows($query_cektgl) == 0){
-                       mysqli_query($con, "INSERT INTO tbl_presensi VALUES ('',$id_klsmk','$hari_ini2')");
+                    $query_cektgl = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND tanggal ='$hari_ini2'") or die (mysqli_error($con));
+                      if (mysqli_num_rows($query_cektgl) > 0){
+                      
+                       $query_state = mysqli_query($con, "SELECT state FROM tbl_temp_presensi WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
+                      
+                         if (mysqli_num_rows($query_state) > 0){
+                          mysqli_query($con, "UPDATE tbl_temp_presensi SET state='$state' WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
+                          
+                         } else {
+                          mysqli_query($con, "INSERT INTO tbl_temp_presensi VALUES ('$id_klsmk','$state')") or die (mysqli_error($con));
+                         }
                       }
-                    } 
                     }
                     
                     $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmk' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
@@ -121,6 +130,10 @@ include '../sidebar_admin.php';
                       </tr>
                       </tbody>
                     </table>
+                    <a href="../admin_backend_presensi" class="btn btn-warning btn-sm">
+                      <i class="nav-icon fas fa-chevron-left"></i> kembali
+                    </a>
+                    <a href="tutuppresensi.php?id=<?=$id_klsmk;?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menutup Presensi ?')">Tutup Presensi</a>
                     <?php
                     
                     
@@ -151,7 +164,10 @@ include '../sidebar_admin.php';
                   ?>
             
                   <h6>Digenerate oleh : <b><?=$nama_dosen;?></b> 
-                  <br> pada : <?= $hari_ini;?> </h6>
+                  <br> pada : <?= $hari_ini;?> 
+                  <br> Berakhir Pada : <label for="timer"><div id="timer"></div></label>
+
+                </h6>
                   </center>
 
                   </div>
@@ -206,6 +222,28 @@ include "../script.php";
            setTimeout(refreshTable, 10000);
         });
     }
+</script>
+<script type="text/javascript">
+    function countdownTimer() {
+        var countDownDate = new Date().getTime() + 600000; // 1 menit (60000 milidetik)
+        
+        var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
+            
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "Waktu telah habis!";
+                window.location.href = "tutuppresensi.php?id=<?= $id_klsmk;?>";
+            }
+        }, 1000);
+    }
+    countdownTimer();
 </script>
 
 
