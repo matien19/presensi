@@ -7,6 +7,7 @@ require_once "../database/config.php";
                     <th style="width:5%;">No</th>
                     <th><center>Mahasiswa</center></th>
                     <th><center>Ket</center></th>
+                    <th><center>Action</center></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -20,6 +21,8 @@ require_once "../database/config.php";
                       {
                         while($data = mysqli_fetch_array($query_peserta))
                         {
+                          $nim = $data['nim'];
+                          $nama = $data['nama'];
                       
                                 ?>
                             <tr>
@@ -30,7 +33,7 @@ require_once "../database/config.php";
 
                                   <td>
                                    <h6>
-                                   [ <b><?= $data['nim'];?></b> ] <?= $data['nama'];?> 
+                                   [ <b><?= $nim;?></b> ] <?= $nama; ?> 
                                    </h6>  
                                   </td>
 
@@ -57,13 +60,34 @@ require_once "../database/config.php";
                                   </center>
 
                                  </td>
+                                 <td>
+                                  <center>
+                                    <?php 
+                                    if ($ket == 'Y') {?>
+                                    <button class="btn btn-danger btn-sm" id="hadir2" onClick="handleClickAlfa('<?=$nim;?>')">
+                                    <i class="far fa-window-close"></i>
+                                   Alfa 
+                                    </button>
+                                    <?php
+                                    } else {?>
+                                    <button class="btn btn-success btn-sm" id="hadir" onClick="handleClick('<?=$nim;?>')">
+                                    <i class="far fa-check-square"></i>
+                                   Hadir 
+                                    </button>
+                                    <?php
+                                  }
+
+                                    ?>
+                                 
+                                  </center>
+                                  </td>
                               </tr>
 
                             <?php
                         }
                         }else
                         {
-                          echo "<tr><td colspan=\"5\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
+                          echo "<tr><td colspan=\"6\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
                         }
 
                           ?>
@@ -73,3 +97,20 @@ require_once "../database/config.php";
 
                     </tfoot>
                   </table>
+<script type="text/javascript">
+function handleClick(nim){
+    $(document).ready(function(){
+      console.log(nim);
+      $('#hadir').load('updatehadir.php?id_klsmk=<?= $id_klsmk;?>&nim='+nim);
+    });
+
+    }
+</script>
+<script type="text/javascript">
+  function handleClickAlfa(nim2){
+    $(document).ready(function(){
+      $('#hadir2').load('updatealfa.php?id_klsmk=<?= $id_klsmk;?>&nim='+nim2);
+    });
+
+    }
+</script>

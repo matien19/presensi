@@ -107,12 +107,8 @@ include '../sidebar_admin.php';
                           <td><?=$kelas;?></td>
                       </tr>
                       <tr>
-                        <td><b>Kode Jurusan</b></td>
+                        <td width=50%;><b>Kode Jurusan</b></td>
                         <td><?= $kd_jurusan;?></td>
-                      </tr>
-                      <tr>
-                        <td><b>Kode Kurikulum</b></td>
-                        <td>isi kode Kurikulum</td>
                       </tr>
                       </tbody>
                     </table>

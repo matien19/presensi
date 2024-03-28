@@ -219,7 +219,7 @@ include "../script.php";
 
     function refreshTable(){
         $('#presensi').load('tablepresensi.php?id_klsmk=<?= $id_klsmk;?>', function(){
-           setTimeout(refreshTable, 10000);
+           setTimeout(refreshTable, 5000);
         });
     }
 </script>

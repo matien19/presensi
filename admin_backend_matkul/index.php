@@ -270,7 +270,7 @@ include "../footer.php";
 </div>
       <!-- /.modal -->
 
-      <!-- modal edit data mhs -->
+      <!-- modal import data mhs -->
 <div class="modal fade" id="modal-importdata">
         <div class="modal-dialog">
           <div class="modal-content">
