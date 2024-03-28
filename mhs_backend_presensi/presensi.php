@@ -91,7 +91,6 @@ include '../sidebar_mhs.php';
                   <?php
                   $id_klsmatkul = @$_GET['id'];
                   $nimmhs = @$_GET['nim'];
-                  echo $id_klsmatkul."--".$nimmhs;
                   
                   ?>
                 <div id="video-container">

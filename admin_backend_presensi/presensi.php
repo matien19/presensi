@@ -141,7 +141,7 @@ include '../sidebar_admin.php';
                     include "phpqrcode/qrlib.php"; 
 
                     // nama folder tempat penyimpanan file qrcode
-                    $penyimpanan = "qr_temp/";
+                    $penyimpanan = "../dosen_backend_klsmatkul/qr_temp/";
 
                     // membuat folder dengan nama "temp"
                     if (!file_exists($penyimpanan))
