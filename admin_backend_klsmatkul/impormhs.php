@@ -15,7 +15,7 @@ error_reporting(0);
     {
         $file = $_FILES['file']['name'];
         $ekstensi = explode (".", $file);
-        $file_name = "file".round(microtime(true)).".".end($ekstensi);
+        $file_name = "filemhskls".round(microtime(true)).".".end($ekstensi);
         $sumber = $_FILES['file']['tmp_name'];
         $target_dir ="template/import/";
         $target_file = $target_dir.$file_name;
@@ -48,6 +48,8 @@ error_reporting(0);
           
           }
          }
+      unlink($target_file);
+
       }
 
     ?>

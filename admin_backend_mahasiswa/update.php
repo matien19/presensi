@@ -17,6 +17,7 @@ require_once "../database/config.php";
         $kontak   = trim(mysqli_real_escape_string($con, $_POST['kontak']));
         $kelamin   = trim(mysqli_real_escape_string($con, $_POST['kelamin']));
         $status   = trim(mysqli_real_escape_string($con, $_POST['status']));
+        $jurusan   = trim(mysqli_real_escape_string($con, $_POST['jurusan']));
       
          //inisialisasi ulang kelamin
       if ($kelamin == 'Laki-laki' ) {
@@ -33,20 +34,23 @@ require_once "../database/config.php";
         $status2 = 'T';
       }
 
-      mysqli_query($con, "UPDATE tbl_mahasiswa SET nama='$nama',nohp ='$kontak', kelamin ='$kelamin2', stat='$status2' WHERE nim='$nim'") or die (mysqli_eror($con));
+      mysqli_query($con, "UPDATE tbl_mahasiswa SET nama='$nama',nohp ='$kontak', kelamin ='$kelamin2', stat='$status2', kode_jurusan='$jurusan' WHERE nim='$nim'") or die (mysqli_eror($con));
       mysqli_query($con, "UPDATE tbl_pengguna SET nama='$nama' WHERE username='$nim'") or die (mysqli_eror($con));
+
+      echo '
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      <script>
+        swal("Berhasil", "Data Mahasiswa telah diedit", "success");
+        
+        setTimeout(function(){ 
+         window.location.href = "../admin_backend_mahasiswa";
+      
+        }, 2000);
+      </script> ';
       }
       
     ?>
 
- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
-  swal("Berhasil", "Data Mahasiswa telah diedit", "success");
-  
-  setTimeout(function(){ 
-   window.location.href = "../admin_backend_mahasiswa";
 
-  }, 2000);
-</script> 
 </body>
 </html>

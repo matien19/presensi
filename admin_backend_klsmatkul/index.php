@@ -260,6 +260,21 @@ include "../footer.php";
                     </select>
               </div>
               <div class="form-group">
+                <label for="matkul">Jurusan</label>
+                    </select>
+                        <select class="form-control" name="jurusan">
+                    <?php
+                    $sql_jurusan =  mysqli_query($con, "SELECT * FROM tbl_jurusan") or die (mysqli_error($con));
+                    
+                    while($data_jurusan = mysqli_fetch_array($sql_jurusan)){
+                      ?>
+                      <option value = "<?=$data_jurusan['kode_jurusan'];?>"><b> <?=$data_jurusan['kode_jurusan'];?></b> - [ <?=$data_jurusan['nama'];?> ]</option>
+                      <?php
+                    }
+                    ?>
+                    </select>
+              </div>
+              <div class="form-group">
                 <label for="kelas">Kelas</label>
                 <input name="kelas" type="text" id="kelas" size="2" class="form-control" maxlength="2" placeholder="Masukan Kelas" onKeyPress="return goodchars(event,'ABCDEFGHIJKLMNOPQRSTUVWXYZ',this)" required/>
               </div>
@@ -299,13 +314,29 @@ include "../footer.php";
               </div>
               
               <div class="row">
-              <div class="form-group" >
+              <div class="form-group col-lg-4" >
               <center>
               <h6><b>Template Excel</b></h6>
               <a href="download.php?filename=templateklsmk-mhs.xls" class="btn btn-success btn-sm">
                   <i class="nav-icon fas fa-file-excel"></i> Download
                 </a>
               </center>
+            </div>
+            <div class="form-group col-lg-4">
+            <center>
+             <h6><b>Data Dosen</b></h6>
+              <a href="expordosen.php" class="btn btn-info btn-sm">
+                  <i class="nav-icon fas fa-user-circle"></i> Export
+                </a>
+                </center>
+            </div>
+            <div class="form-group col-lg-4">
+            <center>
+             <h6><b>Data Matkul</b></h6>
+              <a href="expormk.php" class="btn btn-warning btn-sm">
+                  <i class="nav-icon fas fa-file-excel"></i> Export
+                </a>
+                </center>
             </div>
             
               </div>

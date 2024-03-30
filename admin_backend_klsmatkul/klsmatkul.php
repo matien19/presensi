@@ -142,7 +142,7 @@ include '../sidebar_admin.php';
                   <tbody>
                   <?php
                       $no = 1;
-                      $query_peserta_mk = mysqli_query($con, "SELECT id_klsmatkul, tbl_pesertamatkul.nim, nama FROM tbl_pesertamatkul, tbl_mahasiswa WHERE tbl_pesertamatkul.nim = tbl_mahasiswa.nim AND id_klsmatkul='$id_klsmatkul' ") or die (mysqli_error($con));
+                      $query_peserta_mk = mysqli_query($con, "SELECT id_klsmatkul, tbl_pesertamatkul.nim, nama FROM tbl_pesertamatkul, tbl_mahasiswa WHERE tbl_pesertamatkul.nim = tbl_mahasiswa.nim AND id_klsmatkul='$id_klsmatkul' ORDER BY nim ASC") or die (mysqli_error($con));
 
                           if (mysqli_num_rows($query_peserta_mk) > 0)
                           {

@@ -35,6 +35,7 @@ error_reporting(0);
           $kode_matkul      = $data_excel[$j]['C'];
           $kelas            = $data_excel[$j]['D'];
           $nim              = $data_excel[$j]['E'];
+          $jurusan          = $data_excel[$j]['F'];
           $empty            = "";
 
           $querycek_klsmk =  mysqli_query($con, "SELECT * FROM tbl_klsmatkul WHERE kode_matkul='$kode_matkul' AND nid='$nid' AND id_periode='$id_periode' AND kelas='$kelas'") or die (mysqli_eror($con));
@@ -47,7 +48,7 @@ error_reporting(0);
 
                 if ((mysqli_num_rows($query_ceknid) > 0) && (mysqli_num_rows($query_cek_kdmk)) > 0 ) 
                 {
-                  mysqli_query($con, "INSERT INTO tbl_klsmatkul VALUES ('','$nid','$kode_matkul','$id_periode','$kelas')") or die (mysqli_eror($con));
+                  mysqli_query($con, "INSERT INTO tbl_klsmatkul VALUES ('','$nid','$kode_matkul','$id_periode','$kelas','$jurusan')") or die (mysqli_eror($con));
                 }
           }
 

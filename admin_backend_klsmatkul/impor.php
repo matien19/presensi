@@ -29,10 +29,11 @@ error_reporting(0);
           $kode_mk  = $data_excel[$j]['B'];
           $nid      = $data_excel[$j]['C'];
           $kelas    = $data_excel[$j]['D'];
+          $jurusan    = $data_excel[$j]['E'];
           $id_periode = @$_GET['id_periode'];
           $kosong = '';
 
-          $querycek_klsmk =  mysqli_query($con, "SELECT * FROM tbl_klsmatkul WHERE kode_matkul='$kode_mk' AND nid='$nid' AND id_periode='$id_periode' AND kelas='$kelas'") or die (mysqli_eror($con));
+          $querycek_klsmk =  mysqli_query($con, "SELECT * FROM tbl_klsmatkul WHERE kode_matkul='$kode_mk' AND nid='$nid' AND id_periode='$id_periode'  AND kode_jurusan='$jurusan'") or die (mysqli_eror($con));
 
           if (mysqli_num_rows($querycek_klsmk) == 0)
           {
@@ -40,7 +41,7 @@ error_reporting(0);
                 $query_cek_kdmk = mysqli_query($con, "SELECT kode_matkul FROM tbl_matkul WHERE kode_matkul = '$kode_mk'") or die (mysqli_eror($con));
                 if ((mysqli_num_rows($query_ceknid) > 0) && (mysqli_num_rows($query_cek_kdmk)) > 0 ) 
                 {
-                  mysqli_query($con, "INSERT INTO tbl_klsmatkul VALUES ('','$nid','$kode_mk','$id_periode','$kelas')") or die (mysqli_eror($con));
+                  mysqli_query($con, "INSERT INTO tbl_klsmatkul VALUES ('','$nid','$kode_mk','$id_periode','$kelas','$jurusan')") or die (mysqli_eror($con));
                 }else{
                 }
           }
@@ -49,6 +50,7 @@ error_reporting(0);
           
           }
          }
+      unlink($target_file);
       }
 
     ?>

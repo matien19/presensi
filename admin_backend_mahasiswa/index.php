@@ -236,7 +236,7 @@ include '../sidebar_admin.php';
                                                 }
 
                                    ?>
-                                <button class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#modal-editmahasiswa" data-nim="<?=$data['nim'];?>" data-nama="<?=$data['nama'];?>" data-kelamin="<?=$kelamin2;?>" data-nohp="<?=$data['nohp'];?>" data-status="<?=$status2?>">
+                                <button class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#modal-editmahasiswa" data-nim="<?=$data['nim'];?>" data-nama="<?=$data['nama'];?>" data-kelamin="<?=$kelamin2;?>" data-nohp="<?=$data['nohp'];?>" data-status="<?=$status2?>" data-jurusan="<?=$data['kode_jurusan'];?>">
                                   <i class="fas fa-edit"></i>
                                    Edit 
                                 </button> 
@@ -333,6 +333,21 @@ include "../footer.php";
                           <option>Nonanktif</option>
                         </select>
               </div>
+              <div class="form-group">
+                <label for="matkul">Jurusan</label>
+                    </select>
+                        <select class="form-control" name="jurusan">
+                    <?php
+                    $sql_jurusan =  mysqli_query($con, "SELECT * FROM tbl_jurusan") or die (mysqli_error($con));
+                    
+                    while($data_jurusan = mysqli_fetch_array($sql_jurusan)){
+                      ?>
+                      <option value = "<?=$data_jurusan['kode_jurusan'];?>"><b> <?=$data_jurusan['kode_jurusan'];?></b> - [ <?=$data_jurusan['nama'];?> ]</option>
+                      <?php
+                    }
+                    ?>
+                    </select>
+              </div>
             </div>
             <div class="modal-footer pull-right">
               <button type="submit" class="btn btn-danger" name="tambahdata" style="background-color:#86090f"><i class="nav-icon fas fa-plus"></i>Tambah Data</button>
@@ -389,6 +404,21 @@ include "../footer.php";
                           <option>Aktif</option>
                           <option>Nonaktif</option>
                         </select>
+              </div>
+              <div class="form-group">
+                <label for="matkul">Jurusan</label>
+                    </select>
+                        <select class="form-control" name="jurusan">
+                    <?php
+                    $sql_jurusan =  mysqli_query($con, "SELECT * FROM tbl_jurusan") or die (mysqli_error($con));
+                    
+                    while($data_jurusan = mysqli_fetch_array($sql_jurusan)){
+                      ?>
+                      <option value = "<?=$data_jurusan['kode_jurusan'];?>"><b> <?=$data_jurusan['kode_jurusan'];?></b> - [ <?=$data_jurusan['nama'];?> ]</option>
+                      <?php
+                    }
+                    ?>
+                    </select>
               </div>
             </div>
             <div class="modal-footer pull-right">
@@ -497,6 +527,7 @@ $('#modal-editmahasiswa').on('show.bs.modal', function(e) {
      var kelamin      = $(e.relatedTarget).data('kelamin');
      var nohp         = $(e.relatedTarget).data('nohp');
      var status       = $(e.relatedTarget).data('status');
+     var jurusan       = $(e.relatedTarget).data('jurusan');
      
      $(e.currentTarget).find('input[name="nim"]').val(nim);
      $(e.currentTarget).find('input[name="nim2"]').val(nim);
@@ -504,6 +535,7 @@ $('#modal-editmahasiswa').on('show.bs.modal', function(e) {
      $(e.currentTarget).find('select[name="kelamin"]').val(kelamin);
      $(e.currentTarget).find('input[name="kontak"]').val(nohp);
      $(e.currentTarget).find('select[name="status"]').val(status);
+     $(e.currentTarget).find('select[name="jurusan"]').val(jurusan);
 
 });
 </script>
