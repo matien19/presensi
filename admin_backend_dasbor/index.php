@@ -1,6 +1,6 @@
 <?php 
+require_once '../database/config.php';
 $hal = 'dasbor';
-session_start();
 if (isset($_SESSION['peran']))
 {
   if ($_SESSION['peran']!='Admin') 
@@ -49,6 +49,13 @@ include '../navbar.php';
 
 <?php
 include '../sidebar_admin.php';
+
+$query_mhs = mysqli_query($con, "SELECT * FROM tbl_mahasiswa");
+$total_mhs = mysqli_num_rows($query_mhs);
+$query_matkul = mysqli_query($con, "SELECT * FROM tbl_matkul");
+$total_matkul = mysqli_num_rows($query_matkul);
+$query_klsmk = mysqli_query($con, "SELECT * FROM tbl_klsmatkul");
+$total_klsmk = mysqli_num_rows($query_klsmk);
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -63,7 +70,7 @@ include '../sidebar_admin.php';
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3><?=$total_mhs;?></h3>
 
                 <p>Mahasiswa</p>
               </div>
@@ -78,7 +85,7 @@ include '../sidebar_admin.php';
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h3><?=$total_matkul;?><sup style="font-size: 20px"></sup></h3>
 
                 <p>Mata Kuliah</p>
               </div>
@@ -93,7 +100,7 @@ include '../sidebar_admin.php';
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+                <h3><?=$total_klsmk;?></h3>
 
                 <p>kelas Mata Kuliah</p>
               </div>
