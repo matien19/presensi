@@ -14,9 +14,9 @@ require_once "../database/config.php";
 
                     <?php
                       $id_klsmk = @$_GET['id_klsmk'];
-                      $hari_ini = date('Y-m-d');
+                      $tanggal = @$_GET['tanggal'];
                       $no = 1;
-                      $query_peserta = mysqli_query($con, "SELECT tbl_presensi.id_klsmatkul, tbl_presensi.nim,  tbl_presensi.kehadiran, tbl_mahasiswa.nama FROM tbl_presensi,tbl_mahasiswa WHERE tbl_presensi.nim = tbl_mahasiswa.nim AND tbl_presensi.id_klsmatkul = '$id_klsmk' AND tbl_presensi.tanggal = '$hari_ini' ORDER BY nim ASC") or die(mysqli_error($con));
+                      $query_peserta = mysqli_query($con, "SELECT tbl_presensi.id_klsmatkul, tbl_presensi.nim,  tbl_presensi.kehadiran, tbl_mahasiswa.nama FROM tbl_presensi,tbl_mahasiswa WHERE tbl_presensi.nim = tbl_mahasiswa.nim AND tbl_presensi.id_klsmatkul = '$id_klsmk' AND tbl_presensi.tanggal = '$tanggal' ORDER BY nim ASC") or die(mysqli_error($con));
                       if (mysqli_num_rows($query_peserta) > 0)
                       {
                         while($data = mysqli_fetch_array($query_peserta))
@@ -100,7 +100,7 @@ require_once "../database/config.php";
 function handleClick(nim){
     $(document).ready(function(){
       console.log(nim);
-      $('#hadir').load('updatehadir.php?id_klsmk=<?= $id_klsmk;?>&nim='+nim+'&tanggal=<?=$hari_ini;?>');
+      $('#hadir').load('updatehadir.php?id_klsmk=<?= $id_klsmk;?>&nim='+nim+'&tanggal=<?=$tanggal;?>');
     });
 
     }
@@ -108,7 +108,7 @@ function handleClick(nim){
 <script type="text/javascript">
   function handleClickAlfa(nim2){
     $(document).ready(function(){
-      $('#hadir2').load('updatealfa.php?id_klsmk=<?= $id_klsmk;?>&nim='+nim2+'&tanggal=<?=$hari_ini;?>');
+      $('#hadir2').load('updatealfa.php?id_klsmk=<?= $id_klsmk;?>&nim='+nim2+'&tanggal=<?=$tanggal;?>');
     });
 
     }

@@ -81,6 +81,7 @@ include '../sidebar_admin.php';
                     <th>No</th>
                     <th>NIM</th>
                     <th>Nama</th>
+                    <th>jurusan</th>
                     <th><center>Kontak</center></th>
                     <th><center>Kelamin</center></th>
                     <th><center>Status</center></th>
@@ -97,6 +98,7 @@ include '../sidebar_admin.php';
                           {
                             while($data = mysqli_fetch_array($sql_periode))
                             {
+                              $kd_jurusan = $data['kode_jurusan']
                                 ?>
                             <tr>
                                  <td>
@@ -112,6 +114,22 @@ include '../sidebar_admin.php';
                                   <td>
                                    <h6>
                                    <?=$data['nama'];?>
+                                   </h6>
+                                 </td>
+                                  <td>
+                                   <h6>
+                                   <?php
+                                   $query_jurusan = mysqli_query($con, "SELECT nama FROM tbl_jurusan WHERE kode_jurusan='$kd_jurusan'");
+                                   if (mysqli_num_rows($query_jurusan) > 0 ) {
+                                    while ($data_jurusan = mysqli_fetch_assoc($query_jurusan))
+                                    {
+                                    $nama_jurusan = $data_jurusan['nama'];
+                                    echo $nama_jurusan;
+                                    }
+                                   
+                                  }
+                                    
+                                   ?>
                                    </h6>
                                  </td>
 

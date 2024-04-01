@@ -105,13 +105,6 @@ include '../sidebar_dosen.php';
                          }
                       }
                     }
-                    $query_cek_pertemuan = mysqli_query($con, "SELECT * FROM tbl_pertemuan WHERE id_klsmatkul='$id_klsmk' AND tanggal='$hari_ini2'") or die(mysqli_error($con));
-                    if (mysqli_num_rows($query_cek_pertemuan) > 0){
-
-                    }else {
-                      mysqli_query($con, "INSERT INTO tbl_pertemuan VALUES ('$id_klsmk','$validasi','$hari_ini2','$pertemuan')") or die(mysqli_error($con));
-                    }
-
                     
                     $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmk' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
                     $dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul);
@@ -122,8 +115,22 @@ include '../sidebar_dosen.php';
                     $nama_ind = $dataklsmatkul['nama_mk_ind'];
                     $nama_eng = $dataklsmatkul['nama_mk_eng'];
                     $kelas = $dataklsmatkul['kelas'];
+
+                    if(isset($_POST['cari'])){
+                        $pertemuan_histori = trim(mysqli_real_escape_string($con, $_POST['pertemuan']));
+                        $query_tgl = mysqli_query($con, "SELECT tanggal FROM tbl_pertemuan WHERE pertemuan='$pertemuan_histori'") or die(mysqli_error($con));
+                        $data_tanggal = mysqli_fetch_assoc($query_tgl);
+                        if ($data_tanggal ==  null){
+                            $tgl = 'Belum Ada Data';
+                        }else {
+                            $tanggal_pertemuan = $data_tanggal['tanggal'];
+                            $tgl = date( 'd F Y', strTotime($tanggal_pertemuan));
+                        }
+                    }
+
                     ?>
-                    <div class="row">
+
+                                       <div class="row">
                       <div class="col-lg-12">
                         Pertemuan Ke :
                       </div>
@@ -159,7 +166,7 @@ include '../sidebar_dosen.php';
                         <i class="nav-icon fas fa-search"></i> Tampilkan
                        </button>
                   </form>
-                </div>
+                      </div>
               </div>
                   <table class="table table-bordered table-sm">  
                       <tbody>
@@ -181,48 +188,14 @@ include '../sidebar_dosen.php';
                       </tr>
                       <tr>
                         <td><b>Pertemuan Ke</b></td>
-                        <td><?=$pertemuan_ke;?></td>
+                        <td><?=$pertemuan_histori;?> [<?=$tgl;?>]</td>
                       </tr>
                       </tbody>
                     </table>
                     <a href="../dosen_backend_klsmatkul" class="btn btn-warning btn-sm">
                       <i class="nav-icon fas fa-chevron-left"></i> kembali
                     </a>
-                    <a href="tutuppresensi.php?id=<?=$id_klsmk;?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menutup Presensi ?')">Tutup Presensi</a>
-                    <?php
                     
-                    
-                    // memanggil library php qrcode
-                    include "phpqrcode/qrlib.php"; 
-
-                    // nama folder tempat penyimpanan file qrcode
-                    $penyimpanan = "qr_temp/";
-
-                    // membuat folder dengan nama "temp"
-                    if (!file_exists($penyimpanan))
-                    mkdir($penyimpanan);
-
-                    // perintah untuk membuat qrcode dan menyimpannya dalam folder temp
-                    // atur level pemulihan datanya dengan QR_ECLEVEL_L | QR_ECLEVEL_M | QR_ECLEVEL_Q | QR_ECLEVEL_H
-                    // atur pixel qrcode pada parameter ke 4
-                    // atur jarak frame pada parameter ke 5
-                    $nama_qr = $nama_ind.'-'.$kelas.'-'.$hari_ini;
-                    QRcode::png($id_klsmk, $penyimpanan.$nama_qr.'.png', QR_ECLEVEL_L, 10, 5); 
-
-                    // menampilkan qrcode
-                    $file_qr = $penyimpanan.$nama_qr.'.png';
-                  ?>
-                  <center>
-                    <?php
-
-                  echo '<img src="'.$file_qr.'">';
-                  ?>
-            
-                  <h6>Digenerate oleh : <b><?=$nama_dosen;?></b> 
-                  <br> pada : <?= $hari_ini;?> 
-                  <br> Berakhir Pada : <label for="timer"><div id="timer"></div></label>
-                 </h6>
-                  </center>
                   </div>
                   <div class="col-lg-6" >
                   <div id="presensi">
@@ -269,7 +242,7 @@ include "../script.php";
     });
 
     function refreshTable(){
-        $('#presensi').load('tablepresensi.php?id_klsmk=<?= $id_klsmk;?>', function(){
+        $('#presensi').load('tablepresensi_histori.php?id_klsmk=<?= $id_klsmk;?>&tanggal=<?= $tanggal_pertemuan;?>', function(){
            setTimeout(refreshTable, 5000);
         });
     }

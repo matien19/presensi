@@ -155,7 +155,7 @@ include '../sidebar_admin.php';
                                     $total_presensi = $pertemuan*$total_peserta;
                                     $query_total_hadir = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND kehadiran = '$hadir'") or die(mysqli_error($con));
                                     $total_hadir = mysqli_num_rows($query_total_hadir);
-                                   $presentase = ($total_hadir/$total_presensi)*100;
+                                   $presentase = number_format(($total_hadir/$total_presensi)*100,2);
 
                                    }
                                   
@@ -199,7 +199,6 @@ include '../sidebar_admin.php';
                         {
                           echo "<tr><td colspan=\"5\" align=\"center\"><h6>Data Tidak Ditemukan!</h6></td></tr>";
                         }
-
                           ?>
 
                   </tbody>

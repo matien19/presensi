@@ -79,3 +79,10 @@
 <script src="../assets_adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->
 <script src="../assets_adminlte/plugins/toastr/toastr.min.js"></script>
+
+<!-- FLOT CHARTS -->
+<script src="../assets_adminlte/plugins/flot/jquery.flot.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="../assets_adminlte/plugins/flot/plugins/jquery.flot.resize.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="../assets_adminlte/plugins/flot/plugins/jquery.flot.pie.js"></script>

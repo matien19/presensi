@@ -1,9 +1,10 @@
 <?php 
+require_once '../database/config.php';
+
 $hal = 'laporan';
-session_start();
 if (isset($_SESSION['peran']))
 {
-  if ($_SESSION['peran']!='dosen') 
+  if ($_SESSION['peran']!='Admin') 
   {
   echo "<script>window.location='../auth/logout.php';</script>";
   }
@@ -19,7 +20,7 @@ else
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dosen Panel | Dashboard </title>
+  <title>Admin Panel | Grafik </title>
 
 <?php 
 include "../linksheet.php";
@@ -46,11 +47,59 @@ include '../navbar.php';
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
 <?php
-include '../sidebar_dosen.php';
+include '../sidebar_admin.php';
 ?>
 
 <?php
+$aktif = 'A';
+$hadir = 'Y';
+$pertemuan = 16;
+$isi_data = array();
+$peresn = array();
+$query_periode = mysqli_query($con, "SELECT Id FROM tbl_periode WHERE stat='$aktif'");
+$data_periode_aktif = mysqli_fetch_assoc($query_periode);
+$periode_aktif = $data_periode_aktif['Id'];
+$query = "SELECT * FROM tbl_klsmatkul WHERE id_periode ='$periode_aktif'";
+$sql_klsmatkul = mysqli_query($con, $query) or die (mysqli_error($con));
+if (mysqli_num_rows($sql_klsmatkul) > 0)
+{
+  while($data = mysqli_fetch_array($sql_klsmatkul)) {
+    $id_klsmk = $data['Id'];
 
+    //matkul
+    $kelas = $data['kelas'];
+    $kode_mk = $data['kode_matkul'];
+    $query_mk = mysqli_query($con, "SELECT nama_ind, nama_eng, sks FROM tbl_matkul WHERE kode_matkul ='$kode_mk'");
+    $data_mk = mysqli_fetch_assoc($query_mk);
+    $nama_mk = $data_mk['nama_ind'];
+    $nama_mk_eng = $data_mk['nama_eng'];
+    $sks = $data_mk['sks'];
+
+    //dosen
+    $nid = $data['nid'];
+    $query_dosen = mysqli_query($con, "SELECT nama FROM tbl_dosen WHERE nid ='$nid' ");
+    $data_dosen = mysqli_fetch_assoc($query_dosen);
+    $nama_dosen = $data_dosen['nama'];
+
+    //presentase
+    $query_total_peserta = mysqli_query($con, "SELECT * FROM tbl_pesertamatkul WHERE id_klsmatkul='$id_klsmk' AND id_periode ='$periode_aktif'") or die(mysqli_error($con));
+    $total_peserta = mysqli_num_rows($query_total_peserta);
+    if ($total_peserta == 0) {
+     $presentase = 0;
+    } else {
+     $total_presensi = $pertemuan*$total_peserta;
+     $query_total_hadir = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND kehadiran = '$hadir'") or die(mysqli_error($con));
+     $total_hadir = mysqli_num_rows($query_total_hadir);
+    $presentase = ($total_hadir/$total_presensi)*100;
+
+    }
+                                  
+    $isi_data[] = $nama_mk;
+
+  }
+}
+
+$data_js = json_encode($isi_data);
 ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -110,6 +159,15 @@ include "../script.php";
      * BAR CHART
      * ---------
      */
+     var array_js = <?= $data_js; ?>;
+    // Membuat array untuk ticks dengan menggunakan array JavaScript yang diperoleh dari PHP
+    var ticks = [];
+    for (var i = 0; i < array_js.length; i++) {
+        // Menambahkan nomor urutan yang dimulai dari 1
+        var nomor_urutan = i + 1;
+        ticks.push([nomor_urutan, array_js[i]]);
+    }
+    //  console.log(ticks)
 
      var bar_data = {
       data : [[1,10], [2,8], [3,4], [4,13], [5,17], [6,9]],
@@ -128,7 +186,7 @@ include "../script.php";
       },
       colors: ['#3c8dbc'],
       xaxis : {
-        ticks: [[1,'January'], [2,'February'], [3,'March'], [4,'April'], [5,'May'], [6,'June']]
+        ticks: ticks
       }
     })
     /* END BAR CHART */
