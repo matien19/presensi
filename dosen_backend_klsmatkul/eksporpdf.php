@@ -44,11 +44,15 @@ function Footer()
     // Page number
     $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
 }
+
+
 }
+
+
 $id_klsmk = @$_GET['id_klsmk'];
 $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmk' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
 
-while ($dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul)){
+    $dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul);
     $tahun = $dataklsmatkul['tahun'];
     $semester = $dataklsmatkul['semester'];
     $id_periode = $dataklsmatkul['id_periode'];
@@ -56,13 +60,38 @@ while ($dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul)){
     $nama_ind = $dataklsmatkul['nama_mk_ind'];
     $nama_eng = $dataklsmatkul['nama_mk_eng'];
     $kelas = $dataklsmatkul['kelas'];
-}
 
-
+$tanggal = 'Tanjung, '. date('d F Y');
 // Instanciation of inherited class
+
+    // memanggil library php qrcode
+    include "./phpqrcode/qrlib.php"; 
+
+    // nama folder tempat penyimpanan file qrcode
+    $penyimpanan = "../dosen_backend_pengesahan/qr_pengabsahan/";
+
+    // membuat folder dengan nama "temp"
+    if (!file_exists($penyimpanan))
+    mkdir($penyimpanan);
+
+    // perintah untuk membuat qrcode dan menyimpannya dalam folder temp
+    // atur level pemulihan datanya dengan QR_ECLEVEL_L | QR_ECLEVEL_M | QR_ECLEVEL_Q | QR_ECLEVEL_H
+    // atur pixel qrcode pada parameter ke 4
+    // atur jarak frame pada parameter ke 5
+    $link = 'http://localhost/proyekperadaban/dosen_backend_pengesahan/keabsahan.php?nama='.$nama_dosen.'&tahun='.$tahun.'&matkul='.$nama_ind.'&tanggal='.$tanggal;
+    $nama_qr = $nama_dosen.'-'.$kelas.'-'.$tanggal.'.png';
+
+    QRcode::png($link, $penyimpanan.$nama_qr, QR_ECLEVEL_L, 10, 5); 
+
+    // menampilkan qrcode
+    $file_qr = $penyimpanan.$nama_qr;
+
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
+$pdf->SetFont('Arial','B',10);
+$pdf->Cell(150);
+$pdf->Cell(30,8,$tanggal,0,1,'C');
 $pdf->Cell(80);
 // Title
 $pdf->SetFont('Arial','B',14);
@@ -83,7 +112,7 @@ $pdf->Ln(5);
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(10,6,'No.',1,0,'C');
 $pdf->Cell(30,6,'NIM',1,0,'C');
-$pdf->Cell(60,6,'Nama Mahasiswa',1,0,'C');
+$pdf->Cell(70,6,'Nama Mahasiswa',1,0,'C');
 $pdf->Cell(30,6,'Pertemuan',1,0,'C');
 $pdf->Cell(25,6,'Hadir',1,0,'C');
 $pdf->Cell(30,6,'Presentase',1,1,'C');
@@ -98,7 +127,7 @@ if (mysqli_num_rows($query_peserta) > 0)
         $nim = $data_peserta['nim'];
         $pdf->Cell(10,6,$no++,1,0,'C');
         $pdf->Cell(30,6,$nim,1,0,'C');     
-        $pdf->Cell(60,6,$data_peserta['nama'],1,0,'L');
+        $pdf->Cell(70,6,$data_peserta['nama'],1,0,'L');
         $pdf->Cell(30,6,$pertemuan,1,0,'C');
         $ket = 'Y';
         $query_hadir = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE nim = $nim AND id_klsmatkul='$id_klsmk' AND kehadiran = '$ket'") or die(mysqli_error($con));
@@ -108,5 +137,7 @@ if (mysqli_num_rows($query_peserta) > 0)
         $pdf->Cell(30,6,$presentase.'%',1,1,'C');
     }
 }
+$pdf->Ln();
+$pdf->Image($file_qr,160,70,30);
 $pdf->Output();
 ?>

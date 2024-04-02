@@ -13,7 +13,7 @@ if (!$con)
 function base_url($url = null)
 
   {
-    $base_url = "http://localhost/bookinglk";
+    $base_url = "http://localhost/proyekperadaban/";
     if ($url != null)
     {
     	return $base_url."/".$url;
