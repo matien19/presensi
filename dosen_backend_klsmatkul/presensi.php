@@ -77,10 +77,27 @@ include '../sidebar_dosen.php';
                     $id_klsmk = @$_GET['id_klsmk'];
                     $state = 'Y';
                     $validasi = "0";
-                    $query_jumlah_pertemuan = mysqli_query($con, "SELECT COUNT(id_klsmatkul) AS pertemuan FROM tbl_pertemuan") or die(mysqli_error($con));
+                    $query_jumlah_pertemuan = mysqli_query($con, "SELECT COUNT(id_klsmatkul) AS pertemuan FROM tbl_pertemuan WHERE id_klsmatkul='$id_klsmk' ") or die(mysqli_error($con));
                     $data_pertemuan = mysqli_fetch_assoc($query_jumlah_pertemuan);
-                    $pertemuan_ke = $data_pertemuan['pertemuan'];
-                    $pertemuan = $pertemuan_ke + 1;
+                    if ($data_pertemuan == 0) {
+                      $pertemuan = 1;
+                      
+                    }else{
+                      $pertemuan_ke = $data_pertemuan['pertemuan'];
+                    $query_cek_validasi = mysqli_query($con, "SELECT validasi FROM tbl_pertemuan WHERE id_klsmatkul='$id_klsmk' AND pertemuan='$pertemuan_ke'") or die(mysqli_error($con)) ;
+                    $data_validasi = mysqli_fetch_assoc($query_cek_validasi);
+                    if ($data_validasi != null) {
+                      $validasi = $data_validasi['validasi'];
+                    } else{
+                      $validasi = 0;
+                    }
+                    if ($validasi ==  1 ) {
+                      $pertemuan = $pertemuan_ke + 1;
+                    }else {
+                      $pertemuan = $pertemuan_ke;
+                    }
+                    }
+                    
                     $query_peserta_mk = mysqli_query($con, "SELECT id_klsmatkul, tbl_pesertamatkul.nim, nama FROM tbl_pesertamatkul, tbl_mahasiswa WHERE tbl_pesertamatkul.nim = tbl_mahasiswa.nim AND id_klsmatkul='$id_klsmk' ") or die (mysqli_error($con));
                     
                     while($datapeserta = mysqli_fetch_array($query_peserta_mk)) {
@@ -89,7 +106,9 @@ include '../sidebar_dosen.php';
                     $nimmhs = $datapeserta['nim'];
                     $querycekmhs = mysqli_query($con, "SELECT id_klsmatkul, nim FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND nim='$nimmhs' AND tanggal='$hari_ini2'") or die (mysqli_error($con));
                     if (mysqli_num_rows($querycekmhs) == 0){
-                     mysqli_query($con, "INSERT INTO tbl_presensi VALUES ('$id_klsmk','$hari_ini2','$nimmhs','$kehadiran')");
+                    $bulan = date( 'F', strTotime($hari_ini2));
+     
+                     mysqli_query($con, "INSERT INTO tbl_presensi VALUES ('$id_klsmk','$hari_ini2','$nimmhs','$kehadiran','$bulan')");
                     }
                     
                     $query_cektgl = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND tanggal ='$hari_ini2'") or die (mysqli_error($con));
@@ -107,7 +126,7 @@ include '../sidebar_dosen.php';
                     }
                     $query_cek_pertemuan = mysqli_query($con, "SELECT * FROM tbl_pertemuan WHERE id_klsmatkul='$id_klsmk' AND tanggal='$hari_ini2'") or die(mysqli_error($con));
                     if (mysqli_num_rows($query_cek_pertemuan) > 0){
-
+                      
                     }else {
                       mysqli_query($con, "INSERT INTO tbl_pertemuan VALUES ('$id_klsmk','$validasi','$hari_ini2','$pertemuan')") or die(mysqli_error($con));
                     }
@@ -181,14 +200,14 @@ include '../sidebar_dosen.php';
                       </tr>
                       <tr>
                         <td><b>Pertemuan Ke</b></td>
-                        <td><?=$pertemuan_ke;?></td>
+                        <td><?=$pertemuan;?></td>
                       </tr>
                       </tbody>
                     </table>
                     <a href="../dosen_backend_klsmatkul" class="btn btn-warning btn-sm">
                       <i class="nav-icon fas fa-chevron-left"></i> kembali
                     </a>
-                    <a href="tutuppresensi.php?id=<?=$id_klsmk;?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menutup Presensi ?')">Tutup Presensi</a>
+                    <a href="tutuppresensi.php?id=<?=$id_klsmk;?>&pertemuan=<?=$pertemuan;?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda akan menutup Presensi ?')">Tutup Presensi</a>
                     <?php
                     
                     
@@ -206,7 +225,7 @@ include '../sidebar_dosen.php';
                     // atur level pemulihan datanya dengan QR_ECLEVEL_L | QR_ECLEVEL_M | QR_ECLEVEL_Q | QR_ECLEVEL_H
                     // atur pixel qrcode pada parameter ke 4
                     // atur jarak frame pada parameter ke 5
-                    $nama_qr = $nama_ind.'-'.$kelas.'-'.$hari_ini;
+                    $nama_qr = $nama_dosen.'-'.$nama_ind.'-'.$kelas.'-'.$hari_ini;
                     QRcode::png($id_klsmk, $penyimpanan.$nama_qr.'.png', QR_ECLEVEL_L, 10, 5); 
 
                     // menampilkan qrcode

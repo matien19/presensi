@@ -79,7 +79,7 @@ $tanggal = 'Tanjung, '. date('d F Y');
     // atur pixel qrcode pada parameter ke 4
     // atur jarak frame pada parameter ke 5
     $link = 'http://localhost/proyekperadaban/dosen_backend_pengesahan/keabsahan.php?nama='.$nama_dosen.'&tahun='.$tahun.'&matkul='.$nama_ind.'&tanggal='.$tanggal;
-    $nama_qr = $nama_dosen.'-'.$kelas.'-'.$tanggal.'.png';
+    $nama_qr = $nama_dosen.'-'.$nama_ind.'-'.$kelas.'-'.$tanggal.'.png';
 
     QRcode::png($link, $penyimpanan.$nama_qr, QR_ECLEVEL_L, 10, 5); 
 

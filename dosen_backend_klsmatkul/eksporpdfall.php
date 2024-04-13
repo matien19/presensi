@@ -1,6 +1,8 @@
 <?php
 require_once '../database/config.php';
 require_once '../assets_adminlte/dist/fpdf/fpdf.php';
+// memanggil library php qrcode
+include "./phpqrcode/qrlib.php"; 
 
 class PDF extends FPDF
 {
@@ -43,8 +45,11 @@ class PDF extends FPDF
         $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
     }
 
-    function title()
+    function title($tanggal)
     {
+        $this->SetFont('Arial','B',10);
+        $this->Cell(150);
+        $this->Cell(30,8,$tanggal,0,1,'C');
         $this->Cell(80);
         $this->SetFont('Arial','B',14);
         $this->Cell(30,8,'Laporan Presensi Mahasiswa',0,1,'C');
@@ -53,11 +58,13 @@ class PDF extends FPDF
         $this->Ln(5);
     }
 
-    function detail_kelas($con, $id_klsmk)
+    function detail_kelas($con, $id_klsmk, $tanggal)
     {
         $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmk' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
 
-        $dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul);
+
+        while ($dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul)) {
+            
         $tahun = $dataklsmatkul['tahun'];
         $semester = $dataklsmatkul['semester'];
         $id_periode = $dataklsmatkul['id_periode'];
@@ -65,7 +72,13 @@ class PDF extends FPDF
         $nama_ind = $dataklsmatkul['nama_mk_ind'];
         $nama_eng = $dataklsmatkul['nama_mk_eng'];
         $kelas = $dataklsmatkul['kelas'];
+
+        $file_qr = generate_qr($nama_dosen, $tahun, $nama_ind,$kelas, $tanggal);
+
+        }
+        
     
+
         $this->SetFont('Arial','B',10);
         $this->Cell(40,6,'Tahun Akademik',0,0,'L');
         $this->Cell(35,6,': '.$tahun.' - '.$semester,0,1,'L');
@@ -79,17 +92,8 @@ class PDF extends FPDF
 
         $this->tabel_presensi($con, $id_klsmk);
         $this->Ln(5);
-        $this->ttd($nama_dosen);
+        $this->Image($file_qr,160,70,30);
 
-    }
-
-    function ttd($nama_dosen) 
-    {
-        $this->Cell(150);
-        $this->Cell(30,8,'Tanjung, '.date('d M Y'),0,1,'C');
-        $this->Ln(15);
-        $this->Cell(150);
-        $this->Cell(30,8,$nama_dosen,0,1,'C');
     }
 
     function tabel_presensi($con, $id_klsmk)
@@ -97,7 +101,7 @@ class PDF extends FPDF
         
         $header = array('No', 'NIM', 'Nama Mahasiswa', 'Pertemuan', 'Kehadiran', 'Presentase');
         // Column widths
-        $w = array(10,30,60,30,25, 30);
+        $w = array(10,30,70,30,25, 30);
         // Header
         $this->SetFont('Arial','B',12);
         for($i=0;$i<count($header);$i++)
@@ -129,11 +133,36 @@ class PDF extends FPDF
         } 
 
 }
+function generate_qr($nama_dosen, $tahun, $nama_ind, $kelas, $tanggal){
+
+
+        // nama folder tempat penyimpanan file qrcode
+        $penyimpanan = "../dosen_backend_pengesahan/qr_pengabsahan/";
+    
+        // membuat folder dengan nama "temp"
+        if (!file_exists($penyimpanan))
+        mkdir($penyimpanan);
+    
+        // perintah untuk membuat qrcode dan menyimpannya dalam folder temp
+        // atur level pemulihan datanya dengan QR_ECLEVEL_L | QR_ECLEVEL_M | QR_ECLEVEL_Q | QR_ECLEVEL_H
+        // atur pixel qrcode pada parameter ke 4
+        // atur jarak frame pada parameter ke 5
+        $link = 'http://localhost/proyekperadaban/dosen_backend_pengesahan/keabsahan.php?nama='.$nama_dosen.'&tahun='.$tahun.'&matkul='.$nama_ind.'&tanggal='.$tanggal;
+        $nama_qr = $nama_dosen.'-'.$nama_ind.'-'.$kelas.'-'.$tanggal.'.png';
+    
+        QRcode::png($link, $penyimpanan.$nama_qr, QR_ECLEVEL_L, 10, 5); 
+    
+        // menampilkan qrcode
+        $file_qr = $penyimpanan.$nama_qr;
+
+        return $file_qr;
+}
 $pdf = new PDF();
 $pdf->AliasNbPages();
 
 $nid = @$_GET['nid'];
 $aktif = 'A';
+$tanggal = 'Tanjung, '.date('d F Y');
 $query_periode = mysqli_query($con, "SELECT Id FROM tbl_periode WHERE stat='$aktif'");
 $data_periode_aktif = mysqli_fetch_assoc($query_periode);
 $periode_aktif = $data_periode_aktif['Id'];
@@ -147,8 +176,8 @@ if (mysqli_num_rows($sql_klsmatkul) > 0)
 
         // Data loading
         $pdf->AddPage();
-        $pdf->title();
-        $pdf->detail_kelas($con, $id_klsmk);
+        $pdf->title($tanggal);
+        $pdf->detail_kelas($con, $id_klsmk,$tanggal);
     }
 }
 $pdf->Output();

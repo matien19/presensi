@@ -81,26 +81,24 @@ include '../sidebar_admin.php';
                       
                     $kehadiran = 'N';
                     $nimmhs = $datapeserta['nim'];
+                    $pertemuan = 1;
                     $querycekmhs = mysqli_query($con, "SELECT id_klsmatkul, nim FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND nim='$nimmhs' AND tanggal='$hari_ini2'") or die (mysqli_error($con));
                     if (mysqli_num_rows($querycekmhs) == 0){
                      mysqli_query($con, "INSERT INTO tbl_presensi VALUES ('$id_klsmk','$hari_ini2','$nimmhs','$kehadiran')");
                     }
                     
-                    $query_cektgl = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND tanggal ='$hari_ini2'") or die (mysqli_error($con));
+                    $query_cektgl = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND tanggal ='$hari_ini2'") ;
                       if (mysqli_num_rows($query_cektgl) > 0){
-                      
-                       $query_state = mysqli_query($con, "SELECT state FROM tbl_temp_presensi WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
-                      
+                       $query_state = mysqli_query($con, "SELECT * FROM tbl_temp_presensi WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
                          if (mysqli_num_rows($query_state) > 0){
                           mysqli_query($con, "UPDATE tbl_temp_presensi SET state='$state' WHERE id_klsmatkul='$id_klsmk'") or die (mysqli_error($con));
-                          
                          } else {
-                          mysqli_query($con, "INSERT INTO tbl_temp_presensi VALUES ('$id_klsmk','$state')") or die (mysqli_error($con));
+                          mysqli_query($con, "INSERT INTO tbl_temp_presensi VALUES ('$id_klsmk','$state', '$pertemuan' )") or die (mysqli_error($con));
                          }
                       }
                     }
                     
-                    $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen,tbl_matkul.nama_ind as nama_mk_ind,tbl_matkul.nama_eng as nama_mk_eng,tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmk' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
+                    $sql_kelasmatkul = mysqli_query($con, "SELECT tbl_periode.tahun as tahun,tbl_periode.semester as semester, tbl_periode.id as id_periode, tbl_dosen.nama as nama_dosen, tbl_matkul.nama_ind as nama_mk_ind, tbl_matkul.nama_eng as nama_mk_eng, tbl_klsmatkul.kelas as kelas FROM tbl_periode,tbl_dosen,tbl_matkul,tbl_klsmatkul WHERE tbl_klsmatkul.id='$id_klsmk' AND tbl_klsmatkul.nid = tbl_dosen.nid AND tbl_periode.Id=tbl_klsmatkul.id_periode AND tbl_matkul.kode_matkul=tbl_klsmatkul.kode_matkul") or die (mysqli_error($con));
                     $dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul);
                     $tahun = $dataklsmatkul['tahun'];
                     $semester = $dataklsmatkul['semester'];
@@ -110,6 +108,44 @@ include '../sidebar_admin.php';
                     $nama_eng = $dataklsmatkul['nama_mk_eng'];
                     $kelas = $dataklsmatkul['kelas'];
                     ?>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        Pertemuan Ke :
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                      <form class="form-horizontal" action="presensi_history.php?id_klsmk=<?=$id_klsmk;?>" method="POST" >
+                        <div class="form-group">
+                        <select class="form-control" name="pertemuan" requried>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        </select>
+                        </div>
+                      </div>
+
+                        <div class="col-lg-6">
+                        <label for="tahun akademik"></label>
+                        <button type="submit" class="btn btn-primary btn-md" name="cari">
+                        <i class="nav-icon fas fa-search"></i> Tampilkan
+                       </button>
+                  </form>
+                </div>
+              </div>
                   <table class="table table-bordered table-sm">  
                       <tbody>
                       <tr>

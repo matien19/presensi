@@ -161,10 +161,15 @@ include '../sidebar_dosen.php';
                                    <?php 
                                    $query_total_peserta = mysqli_query($con, "SELECT * FROM tbl_pesertamatkul WHERE id_klsmatkul='$id_klsmk' AND id_periode ='$periode_aktif'") or die(mysqli_error($con));
                                    $total_peserta = mysqli_num_rows($query_total_peserta);
-                                   $total_presensi = $pertemuan*$total_peserta;
-                                   $query_total_hadir = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND kehadiran = '$hadir'") or die(mysqli_error($con));
-                                   $total_hadir = mysqli_num_rows($query_total_hadir);
-                                   $presentase = number_format(($total_hadir/$total_presensi)*100,2);
+                                   if ($total_peserta == 0) {
+                                    $presentase = 0;
+                                   } else {
+                                    $total_presensi = $pertemuan*$total_peserta;
+                                    $query_total_hadir = mysqli_query($con, "SELECT * FROM tbl_presensi WHERE id_klsmatkul='$id_klsmk' AND kehadiran = '$hadir'") or die(mysqli_error($con));
+                                    $total_hadir = mysqli_num_rows($query_total_hadir);
+                                    $presentase = number_format(($total_hadir/$total_presensi)*100,2);
+                                   }
+
                                    echo $presentase.'%';
                                    ?>
                                    

@@ -58,11 +58,38 @@ while ($dataklsmatkul = mysqli_fetch_assoc($sql_kelasmatkul)){
     $kelas = $dataklsmatkul['kelas'];
 }
 
+$tanggal = 'Tanjung, '. date('d F Y');
+// Instanciation of inherited class
+
+    // memanggil library php qrcode
+    include "./phpqrcode/qrlib.php"; 
+
+    // nama folder tempat penyimpanan file qrcode
+    $penyimpanan = "../dosen_backend_pengesahan/qr_pengabsahan/";
+
+    // membuat folder dengan nama "temp"
+    if (!file_exists($penyimpanan))
+    mkdir($penyimpanan);
+
+    // perintah untuk membuat qrcode dan menyimpannya dalam folder temp
+    // atur level pemulihan datanya dengan QR_ECLEVEL_L | QR_ECLEVEL_M | QR_ECLEVEL_Q | QR_ECLEVEL_H
+    // atur pixel qrcode pada parameter ke 4
+    // atur jarak frame pada parameter ke 5
+    $link = 'http://localhost/proyekperadaban/dosen_backend_pengesahan/keabsahan.php?nama='.$nama_dosen.'&tahun='.$tahun.'&matkul='.$nama_ind.'&tanggal='.$tanggal;
+    $nama_qr = $nama_dosen.'-'.$nama_ind.'-'.$kelas.'-'.$tanggal.'.png';
+
+    QRcode::png($link, $penyimpanan.$nama_qr, QR_ECLEVEL_L, 10, 5); 
+
+    // menampilkan qrcode
+    $file_qr = $penyimpanan.$nama_qr;
 
 // Instanciation of inherited class
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
+$pdf->SetFont('Arial','B',10);
+$pdf->Cell(150);
+$pdf->Cell(30,8,$tanggal,0,1,'C');
 // Title
 $pdf->Cell(80);
 $pdf->SetFont('Arial','B',14);
@@ -110,11 +137,7 @@ if (mysqli_num_rows($query_peserta) > 0)
         $pdf->Cell(30,6,$presentase.'%',1,1,'C');
     }
 }
-$pdf->Ln(5);
-$pdf->Cell(150);
-$pdf->Cell(30,8,'Tanjung, '.date('d M Y'),0,1,'C');
-$pdf->Ln(15);
-$pdf->Cell(150);
-$pdf->Cell(30,8,$nama_dosen,0,1,'C');
+$pdf->Ln();
+$pdf->Image($file_qr,160,70,30);
 $pdf->Output();
 ?>

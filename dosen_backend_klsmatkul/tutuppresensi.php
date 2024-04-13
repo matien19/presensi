@@ -14,8 +14,10 @@ require_once "../database/config.php";
       $id_klsmatkul = @$_GET['id'];
       $state_on = "Y";
       $state_off = "N";
-
+      $validasi =  1;
+      $pertemuan = @$_GET['pertemuan'];
       mysqli_query($con, "UPDATE tbl_temp_presensi SET state='$state_off' WHERE id_klsmatkul='$id_klsmatkul' AND state='$state_on'") or die (mysqli_error($con));
+      mysqli_query($con, "UPDATE tbl_pertemuan SET validasi ='$validasi' WHERE id_klsmatkul='$id_klsmatkul' AND pertemuan='$pertemuan'") or die (mysqli_error($con));
     ?>
 
  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
